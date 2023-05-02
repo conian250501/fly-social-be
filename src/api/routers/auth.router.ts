@@ -16,7 +16,7 @@ class AuthRouter implements IRouter {
       routerHelper.validateBody(schemas.authRegister),  
       async (req:Request,res:Response) => {
         try {
-          const {email, password, passwordConfirm} = req.body
+          const {email, password} = req.body
           
           const userExist = await userHandler.getByEmail(email);
 
@@ -47,7 +47,8 @@ class AuthRouter implements IRouter {
             throw new Error("User dont exist");
           }
 
-          const isValidPassword = bcrypt.compare(password, user.password);
+          const isValidPassword = await bcrypt.compare(password, user.password);
+
           if(!isValidPassword) {
             throw new Error("Passowrd dont match");
           }
