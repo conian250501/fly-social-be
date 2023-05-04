@@ -1,6 +1,7 @@
-import express, { Application, Request, Response } from "express";
-import BaseRouter from "./routers";
 import cors from "cors";
+import express, { Application, Request, Response } from "express";
+import "./middlewares/passport.middleware";
+import BaseRouter from "./routers";
 
 interface IApi {
   server(): Promise<Application>

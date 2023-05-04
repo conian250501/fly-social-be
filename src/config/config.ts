@@ -1,5 +1,5 @@
-import * as dotenv from "dotenv";
 
+import dotenv from "dotenv";
 dotenv.config();
 
 interface IConfig{
@@ -8,6 +8,6 @@ interface IConfig{
 }
 
 export const config: IConfig = {
-  SERVER_PORT: process.env.PORT || '',
+  SERVER_PORT: process.env.SERVER_PORT || '',
   NODE_ENV: process.env.NODE_ENV || ''
 }
