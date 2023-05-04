@@ -20,7 +20,7 @@ class AuthMiddleware {
         return errorResponse(res, new Error("Token expired"), 401)
       }
 
-      const user = await userHandler.getByEmail(result.email as string);
+      const user = await userHandler.getById(result.id as number);
       req.user = user;
       next();
       

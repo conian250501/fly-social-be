@@ -1,16 +1,29 @@
+import bcrypt from "bcrypt";
 import { Request, Response, Router } from "express";
-import IRouter from "./interface/IRouter";
-import { errorResponse, successResponse } from "./response";
+import jwt from 'jsonwebtoken';
+import passport from "passport";
+import userHandler from "../handlers/user.handler";
+import { routerHelper, schemas } from "../helpers/router.helper";
 import authMiddleware from "../middlewares/auth.middleware";
 import { IUserAuthInfoRequest } from "../types/interface";
-import { routerHelper, schemas } from "../helpers/router.helper";
-import userHandler from "../handlers/user.handler";
-import bcrypt from "bcrypt";
-import  jwt  from 'jsonwebtoken';
+import "../middlewares/passport.middleware";
+import IRouter from "./interface/IRouter";
+import { errorResponse, successResponse } from "./response";
 
 const router = Router();
 class AuthRouter implements IRouter {
   get routes() {
+
+    router.post("/google", passport.authenticate("google-oauth-token", {session: false}), (req,res) => {
+      try {
+        
+        return successResponse(res, req.user);
+        
+      } catch (error) {
+        return errorResponse(res,error);
+      }
+    })
+
     router.post(
       "/sign-up",
       routerHelper.validateBody(schemas.authRegister),  
@@ -53,7 +66,7 @@ class AuthRouter implements IRouter {
             throw new Error("Passowrd dont match");
           }
           const newToken = jwt.sign(
-            {email}, 
+            {id: user.id}, 
             process.env.JWT_SECRET,
             {expiresIn: "1d"}
           );
