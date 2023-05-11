@@ -42,6 +42,12 @@ export class User extends BaseEntity {
   @Column({name: "google_id", default:null})
   googleId: string;
 
+  @Column({name: "facebook_id", default:null})
+  facebookId: string;
+
+  @Column({name: "github_id", default:null})
+  githubId: string;
+
   @Column({default:"user"})
   role:string;
 }

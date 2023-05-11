@@ -21,6 +21,7 @@ class AuthMiddleware {
       }
 
       const user = await userHandler.getById(result.id as number);
+      
       req.user = user;
       next();
       

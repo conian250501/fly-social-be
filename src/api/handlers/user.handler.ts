@@ -8,7 +8,7 @@ class UserHandler implements IUserHandler {
   async getByEmail(email: string) {
     try {
       const user = await UserRepository.getByEmail(email);
-      return user; 
+      return user;
     } catch (error) {
       throw error;
     }
@@ -23,11 +23,20 @@ class UserHandler implements IUserHandler {
   }
 
 
-  async getById(id:number){
+  async getById(id: number) {
     try {
       const user = await UserRepository.getById(id);
 
       return user
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAccountLocal(typeAuth: TypeAuth, email: string): Promise<User> {
+    try {
+      const user = await UserRepository.getAccountLocal(typeAuth, email);
+      return user;
     } catch (error) {
       throw error;
     }
@@ -41,6 +50,25 @@ class UserHandler implements IUserHandler {
       throw error;
     }
   }
+
+  async getAccountFacebook(typeAuth: TypeAuth, facebookId: string): Promise<User> {
+    try {
+      const user = await UserRepository.getAccountFacebook(typeAuth, facebookId);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAccountGithub(typeAuth: TypeAuth, githubId: string): Promise<User> {
+    try {
+      const user = await UserRepository.getAccountGithub(typeAuth, githubId);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 
 }
 
