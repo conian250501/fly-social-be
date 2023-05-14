@@ -1,6 +1,11 @@
 import { DataSource } from "typeorm";
 import { Environment } from "../config/enviroment";
 import { User } from "./entities/User";
+import { Tweet } from "./entities/Tweet";
+import { Like } from "./entities/Like";
+import { Comment } from "./entities/Comment";
+import { StorageTweet } from "./entities/StorageTweet";
+import { Follow } from "./entities/Follow";
 
 Environment.setup();
 
@@ -14,7 +19,12 @@ export const AppDataSource = new DataSource({
   synchronize: false,
   logging: false,
   entities: [
-    User
+    User,
+    Tweet,
+    Like,
+    Comment,
+    StorageTweet,
+    Follow
   ],
   migrations: [__dirname + '/migrations/**/*.ts'],
   subscribers:[]
