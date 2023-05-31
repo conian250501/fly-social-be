@@ -21,6 +21,9 @@ export const schemas = {
     confirmPassword: Joi.ref("newPassword"),
     token: Joi.string().required()
   }),
+  verifyToken: Joi.object({
+    token: Joi.string().required(),
+  }),
 
 };
 

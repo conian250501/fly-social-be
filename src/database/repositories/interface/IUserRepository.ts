@@ -1,4 +1,5 @@
 
+import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../entities/User"
 
 export default interface IUserRepository{
@@ -9,4 +10,5 @@ export default interface IUserRepository{
   getAccountFacebook(typeAuth:TypeAuth, facebookId:string):Promise<User>;
   getAccountGithub(typeAuth:TypeAuth,githubId:string):Promise<User>;
   create(data:User): Promise<User>;
+  update(id:number,data:User): Promise<UpdateResult>;
 }
