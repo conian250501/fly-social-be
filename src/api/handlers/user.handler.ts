@@ -32,6 +32,15 @@ class UserHandler implements IUserHandler {
     }
   }
 
+  async getAccountLocalById(id: number): Promise<User> {
+    try {
+      const user = await UserRepository.getAccountLocalById(id);
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAccountLocal(typeAuth: TypeAuth, email: string): Promise<User> {
     try {
       const user = await UserRepository.getAccountLocal(typeAuth, email);

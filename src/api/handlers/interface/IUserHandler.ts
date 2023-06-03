@@ -11,4 +11,5 @@ export default interface IUserHandler{
   getAccountGithub(typeAuth:TypeAuth, githubId:string): Promise<User>;
   getAccountLocal(typeAuth:TypeAuth, email:string): Promise<User>;
   update(id:number,data:User): Promise<UpdateResult>;
+  getAccountLocalById(id:number): Promise<User>;
 }
