@@ -29,4 +29,6 @@ export class Tweet extends BaseEntity {
   @ManyToMany(() => Comment, (like) => like.tweets)
   comments: Comment[];
 
+  @Column({ name: "is_private", default: false })
+  isPrivate: boolean;
 }

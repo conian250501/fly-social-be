@@ -6,11 +6,13 @@ export const schemas = {
   authRegister: Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
-    password: Joi.string().regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/).required(),
-    passwordConfirm: Joi.valid(Joi.ref("password")).required()
+    password: Joi.string()
+      .regex(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+      .required(),
+    passwordConfirm: Joi.valid(Joi.ref("password")).required(),
   }),
   authLogin: Joi.object({
-    email: Joi.string().required(), 
+    email: Joi.string().required(),
     password: Joi.string().required(),
   }),
   forgotPassword: Joi.object({
@@ -19,12 +21,25 @@ export const schemas = {
   resetPassword: Joi.object({
     newPassword: Joi.string().required(),
     confirmPassword: Joi.ref("newPassword"),
-    token: Joi.string().required()
+    token: Joi.string().required(),
   }),
   verifyToken: Joi.object({
     token: Joi.string().required(),
   }),
 
+  createTweetBody: Joi.object({
+    file: Joi.string().allow(null, {}, ""),
+    content: Joi.string().max(255).required(),
+    isPrivate: Joi.boolean().required(),
+  }),
+  updateTweetParams: Joi.object({
+    id: Joi.number().required(),
+  }),
+  updateTweetBody: Joi.object({
+    file: Joi.string().allow(null, {}, ""),
+    content: Joi.string().max(255).required(),
+    isPrivate: Joi.boolean().required(),
+  }),
 };
 
 export const routerHelper = {
@@ -32,7 +47,29 @@ export const routerHelper = {
     return (req: Request, res: Response, next: NextFunction) => {
       const result = schema.validate(req.body);
       if (result.error) {
-        return errorResponse(res, result.error)
+        return errorResponse(res, result.error);
+      } else {
+        next();
+      }
+    };
+  },
+
+  validateQuery: (schema: any) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+      const result = schema.validate(req.query);
+      if (result.error) {
+        return errorResponse(res, result.error);
+      } else {
+        next();
+      }
+    };
+  },
+
+  validateParams: (schema: any) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+      const result = schema.validate(req.params);
+      if (result.error) {
+        return errorResponse(res, result.error);
       } else {
         next();
       }
