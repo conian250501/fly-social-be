@@ -3,6 +3,9 @@ import Joi from "joi";
 import { errorResponse } from "../routers/response";
 
 export const schemas = {
+  params: Joi.object({
+    id: Joi.number().required(),
+  }),
   authRegister: Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),

@@ -3,6 +3,7 @@ import { Tweet } from "../../entities/Tweet";
 
 export default interface ITweetRepository {
   getAllByUser(userId: number): Promise<Tweet[]>;
+  getAll(): Promise<Tweet[]>;
   getById(id:number):Promise<Tweet>;
   create(data: Tweet): Promise<Tweet>;
   update(id: number, data: Tweet): Promise<UpdateResult>;

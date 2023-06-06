@@ -23,16 +23,26 @@ class TweetRepository implements ITweetRepository {
     });
   }
 
+  getAll(): Promise<Tweet[]> {
+    return this.repo.find({
+      relations: {
+        comments: true,
+        user: true,
+        likes: true,
+      },
+    });
+  }
+
   getById(id: number): Promise<Tweet> {
     return this.repo.findOne({
       where: {
         id: id,
       },
-      relations:{
-        comments:true,
-        likes:true,
-        user:true
-      }
+      relations: {
+        comments: true,
+        likes: true,
+        user: true,
+      },
     });
   }
 

@@ -20,6 +20,15 @@ class TweetHandler implements ITweetHandler {
     }
   }
 
+  async getAll(): Promise<Tweet[]> {
+    try {
+      const tweets = await TweetRepository.getAll();
+      return tweets;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async upload(id: number, file: Express.Multer.File): Promise<string> {
     try {
       cloudinary.v2.config({
