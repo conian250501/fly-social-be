@@ -22,6 +22,14 @@ class UserRepository implements IUserRepository {
     });
   }
 
+  getAccountLocalById(id: number): Promise<User> {
+    return this.repo.findOne({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   getAccountLocal(typeAuth: TypeAuth, email: string): Promise<User> {
     return this.repo.findOne({
       where: {

@@ -142,7 +142,7 @@ class AuthRouter implements IRouter {
       async (req: Request, res: Response) => {
         try {
           const { email } = req.body;
-          const user = await userHandler.getByEmail(email);
+          const user = await userHandler.getAccountLocal(TypeAuth.LOCAL, email);
           if (!user) {
             throw new Error(`User doesn't exist`);
           }
@@ -158,7 +158,7 @@ class AuthRouter implements IRouter {
           const subject = "Confirm your account here";
           const html = `
               <p>Please go to link below to reset your password account</p>
-              <a href="${process.env.CLIENT_URL}/auth/forgot-password/${token}">Reset your password NOW</a>
+              <a href="${process.env.CLIENT_URL}/auth/reset-password?token=${token}">Reset your password NOW</a>
             `;
 
           await mailer.sendMailAuth(email, subject, html);
@@ -177,7 +177,7 @@ class AuthRouter implements IRouter {
       async (req: IUserAuthInfoRequest, res: Response) => {
         try {
           const { newPassword } = req.body;
-          const user = req.user;
+          const user = await userHandler.getAccountLocalById(req.user.id);
 
           const isValidPassword = await bcrypt.compare(
             newPassword,
