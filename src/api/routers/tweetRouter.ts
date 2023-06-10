@@ -28,7 +28,7 @@ class TweetRouter implements IRouter {
       routerHelper.validateParams(schemas.params),
       async (req, res) => {
         try {
-          const {id} = req.params
+          const { id } = req.params;
           const tweet = await tweetHandler.getById(Number(id));
           return successResponse(res, tweet);
         } catch (error) {
@@ -77,6 +77,22 @@ class TweetRouter implements IRouter {
 
           return successResponse(res, {
             message: "Updated tweet successfully",
+          });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.delete(
+      "/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      async (req, res) => {
+        try {
+          const { id } = req.params;
+          await tweetHandler.delete(Number(id));
+          return successResponse(res, {
+            message: `Deleted tweet successfully`,
           });
         } catch (error) {
           return errorResponse(res, error);
