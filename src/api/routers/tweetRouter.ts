@@ -14,7 +14,7 @@ const uploader = multer({
 
 class TweetRouter implements IRouter {
   get routes() {
-    router.get("/", authMiddleware.authToken, async (req, res) => {
+    router.get("/", async (req, res) => {
       try {
         const tweets = await tweetHandler.getAll();
         return successResponse(res, tweets);
@@ -22,6 +22,20 @@ class TweetRouter implements IRouter {
         return errorResponse(res, error);
       }
     });
+    router.get(
+      "/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      async (req, res) => {
+        try {
+          const {id} = req.params
+          const tweet = await tweetHandler.getById(Number(id));
+          return successResponse(res, tweet);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
     router.post(
       "/",
       authMiddleware.authToken,
