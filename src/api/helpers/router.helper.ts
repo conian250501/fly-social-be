@@ -49,14 +49,11 @@ export const schemas = {
   disLikeBody: Joi.object({
     tweetId: Joi.number().required(),
   }),
-  createCommentBody: Joi.object({
-    file: Joi.string().allow(null, {}, ""),
-    content: Joi.string().max(255).required(),
-    tweetId: Joi.number().required(),
+  newCommentBody: Joi.object({
+    content: Joi.string().max(255).required().allow(""),
   }),
   updateCommentBody: Joi.object({
-    file: Joi.string().allow(null, {}, ""),
-    content: Joi.string().max(255),
+    content: Joi.string().max(255).allow(""),
   }),
 };
 

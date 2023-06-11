@@ -17,7 +17,10 @@ class TweetRepository implements ITweetRepository {
         },
       },
       relations: {
-        comments: true,
+        comments: {
+          likes: true,
+          user: true,
+        },
         likes: {
           user: true,
         },
@@ -31,7 +34,10 @@ class TweetRepository implements ITweetRepository {
         isPrivate: false,
       },
       relations: {
-        comments: true,
+        comments: {
+          likes: true,
+          user: true,
+        },
         user: true,
         likes: {
           user: true,
@@ -49,7 +55,10 @@ class TweetRepository implements ITweetRepository {
         id: id,
       },
       relations: {
-        comments: true,
+        comments: {
+          likes: true,
+          user: true,
+        },
         likes: {
           user: true,
         },
