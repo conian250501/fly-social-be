@@ -43,6 +43,21 @@ export const schemas = {
     content: Joi.string().max(255).required(),
     isPrivate: Joi.boolean().required(),
   }),
+  likeBody: Joi.object({
+    tweetId: Joi.number().required(),
+  }),
+  disLikeBody: Joi.object({
+    tweetId: Joi.number().required(),
+  }),
+  createCommentBody: Joi.object({
+    file: Joi.string().allow(null, {}, ""),
+    content: Joi.string().max(255).required(),
+    tweetId: Joi.number().required(),
+  }),
+  updateCommentBody: Joi.object({
+    file: Joi.string().allow(null, {}, ""),
+    content: Joi.string().max(255),
+  }),
 };
 
 export const routerHelper = {

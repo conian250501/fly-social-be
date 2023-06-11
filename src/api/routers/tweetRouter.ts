@@ -6,6 +6,7 @@ import authMiddleware from "../middlewares/auth.middleware";
 import { IUserAuthInfoRequest } from "../types/interface";
 import IRouter from "./interface/IRouter";
 import { errorResponse, successResponse } from "./response";
+import { ETypeLike } from "../../database/entities/interfaces/like.interface";
 
 const router = Router();
 const uploader = multer({
@@ -94,6 +95,40 @@ class TweetRouter implements IRouter {
           return successResponse(res, {
             message: `Deleted tweet successfully`,
           });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.post(
+      "/:id/like",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { id } = req.params;
+          const newLike = await tweetHandler.like({
+            ...req.body,
+            type: ETypeLike.Tweet,
+            tweetId: id,
+            userId: req.user.id,
+          });
+          return successResponse(res, newLike);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.post(
+      "/:id/dislike",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { id } = req.params;
+          const newLike = await tweetHandler.dislike(
+            ETypeLike.Tweet,
+            Number(id)
+          );
+          return successResponse(res, newLike);
         } catch (error) {
           return errorResponse(res, error);
         }

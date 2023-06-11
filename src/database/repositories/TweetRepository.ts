@@ -18,7 +18,9 @@ class TweetRepository implements ITweetRepository {
       },
       relations: {
         comments: true,
-        likes: true,
+        likes: {
+          user: true,
+        },
       },
     });
   }
@@ -31,7 +33,9 @@ class TweetRepository implements ITweetRepository {
       relations: {
         comments: true,
         user: true,
-        likes: true,
+        likes: {
+          user: true,
+        },
       },
       order: {
         createdAt: "DESC",
@@ -46,7 +50,9 @@ class TweetRepository implements ITweetRepository {
       },
       relations: {
         comments: true,
-        likes: true,
+        likes: {
+          user: true,
+        },
         user: true,
       },
     });

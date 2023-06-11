@@ -1,5 +1,12 @@
 import { DeleteResult, UpdateResult } from "typeorm";
+import { Like } from "../../../database/entities/Like";
 import { Tweet } from "../../../database/entities/Tweet";
+import { ETypeLike } from "../../../database/entities/interfaces/like.interface";
+
+export interface IDataLike extends Omit<Like, "user" | "tweet"> {
+  userId: number;
+  tweetId: number;
+}
 
 export default interface ITweetHandler {
   getAllByUser(userId: number): Promise<Tweet[]>;
@@ -9,4 +16,6 @@ export default interface ITweetHandler {
   update(id: number, data: Tweet): Promise<UpdateResult>;
   delete(id: number): Promise<DeleteResult>;
   upload(id: number, file: Express.Multer.File): Promise<string>;
+  like(data: IDataLike): Promise<Like>;
+  dislike(type: ETypeLike, tweetId: number): Promise<DeleteResult>;
 }

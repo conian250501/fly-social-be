@@ -10,6 +10,7 @@ import { BaseEntity } from "./BaseEntity";
 import { User } from "./User";
 import { ETypeLike } from "./interfaces/like.interface";
 import { Tweet } from "./Tweet";
+import { Comment } from "./Comment";
 
 @Entity({ name: "likes" })
 export class Like extends BaseEntity {
@@ -20,22 +21,19 @@ export class Like extends BaseEntity {
   @Column({ type: "enum", enum: ETypeLike, default: ETypeLike.Tweet })
   type: ETypeLike;
 
-  @Column({ name: "type_like_id" })
-  typeId: number;
-
-  @ManyToMany(() => Tweet, (tweet) => tweet.likes, {
+  @ManyToOne(() => Tweet, (tweet) => tweet.likes, {
     cascade: true,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
-  @JoinTable({
-    name: "tweets_likes",
-    joinColumn: {
-      name: "like_id",
-    },
-    inverseJoinColumn: {
-      name: "tweet_id",
-    },
+  @JoinColumn({ name: "tweet_id" })
+  tweet: Tweet;
+
+  @ManyToOne(() => Comment, (comment) => comment.likes, {
+    cascade: true,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   })
-  tweets: Tweet[];
+  @JoinColumn({ name: "comment_id" })
+  comment: Comment;
 }

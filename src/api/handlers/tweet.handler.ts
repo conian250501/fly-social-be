@@ -1,9 +1,12 @@
-import { Tweet } from "../../database/entities/Tweet";
-import ITweetHandler from "./interface/ITweetHander";
-import TweetRepository from "../../database/repositories/TweetRepository";
-import { DeleteResult, UpdateResult } from "typeorm";
 import cloudinary from "cloudinary";
+import { ETypeLike } from "src/database/entities/interfaces/like.interface";
+import { DeleteResult, UpdateResult } from "typeorm";
+import { Like } from "../../database/entities/Like";
+import { Tweet } from "../../database/entities/Tweet";
+import LikeRepository from "../../database/repositories/LikeRepository";
+import TweetRepository from "../../database/repositories/TweetRepository";
 import UserRepository from "../../database/repositories/UserRepository";
+import ITweetHandler, { IDataLike } from "./interface/ITweetHander";
 
 class TweetHandler implements ITweetHandler {
   async create(userId: number, data: Tweet): Promise<Tweet> {
@@ -46,12 +49,13 @@ class TweetHandler implements ITweetHandler {
 
       const tweet = await TweetRepository.getById(id);
 
+      console.log(file.path);
+
       const { secure_url } = await cloudinary.v2.uploader.upload(file.path, {
         public_id: `file_${tweet.id}`,
         use_filename: true,
-        folder: "fly-social/tweets",
+        folder: `fly-social/tweets/${tweet.id}`,
       });
-
       if (file.mimetype.startsWith("image")) {
         await TweetRepository.update(id, {
           image: secure_url,
@@ -89,7 +93,49 @@ class TweetHandler implements ITweetHandler {
 
   async delete(id: number): Promise<DeleteResult> {
     try {
+      cloudinary.v2.config({
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+
+      const _result = await cloudinary.v2.api.resources({
+        type: "upload",
+        prefix: `fly-social/tweets/${id}`,
+      });
+
+      // Delete each file within the folder
+      for (const resource of _result.resources) {
+        await cloudinary.v2.uploader.destroy(resource.public_id);
+      }
+
       const result = await TweetRepository.delete(id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async like(data: IDataLike): Promise<Like> {
+    try {
+      const user = await UserRepository.getById(data.userId);
+      const tweet = await TweetRepository.getById(data.tweetId);
+      const newLike = await LikeRepository.create({
+        type: data.type,
+        user: user,
+        tweet: tweet,
+      } as Like);
+      return newLike;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async dislike(type: ETypeLike, tweetId: number): Promise<DeleteResult> {
+    try {
+      const like = await LikeRepository.getByTypeAndTweetId(type, tweetId);
+
+      const result = await LikeRepository.delete(like.id);
       return result;
     } catch (error) {
       throw error;
