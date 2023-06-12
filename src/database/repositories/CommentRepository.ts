@@ -11,6 +11,28 @@ class CommentRepository implements ICommentRepository {
   create(data: Comment): Promise<Comment> {
     return this.repo.save(data);
   }
+  getAllByTweet(tweetId: number): Promise<Comment[]> {
+    return this.repo.find({
+      where: {
+        tweet: {
+          id: tweetId,
+        },
+      },
+      relations: {
+        likes: {
+          user: true,
+        },
+        tweet: {
+          user: true,
+          likes: true,
+        },
+        user: true,
+      },
+      order: {
+        createdAt: "DESC",
+      },
+    });
+  }
   getById(id: number): Promise<Comment> {
     if (!id) return null;
     return this.repo.findOne({

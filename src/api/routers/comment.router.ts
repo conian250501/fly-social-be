@@ -15,6 +15,15 @@ const uploader = multer({
 
 class CommentRouter implements IRouter {
   get routes() {
+    router.get("/:tweetId", authMiddleware.authToken, async (req, res) => {
+      try {
+        const { tweetId } = req.params;
+        const comments = await commentHandler.getAllByTweet(Number(tweetId));
+        return successResponse(res, comments);
+      } catch (error) {
+        return errorResponse(res, error);
+      }
+    });
     // COMMENT FOR TWEET
     router.post(
       "/:tweetId",
@@ -55,7 +64,7 @@ class CommentRouter implements IRouter {
       "/:id",
       authMiddleware.authToken,
       routerHelper.validateParams(schemas.params),
-      routerHelper.validateBody(schemas.updateTweetBody),
+      routerHelper.validateBody(schemas.updateCommentBody),
       async (req, res) => {
         try {
           const { id } = req.params;

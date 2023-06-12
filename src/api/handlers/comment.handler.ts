@@ -73,6 +73,21 @@ class CommentHandler implements ICommentHandler {
   }
   async delete(id: number): Promise<DeleteResult> {
     try {
+      cloudinary.v2.config({
+        cloud_name: process.env.CLOUDINARY_NAME,
+        api_key: process.env.CLOUDINARY_API_KEY,
+        api_secret: process.env.CLOUDINARY_API_SECRET,
+      });
+
+      const _result = await cloudinary.v2.api.resources({
+        type: "upload",
+        prefix: `fly-social/comments/${id}`,
+      });
+
+      // Delete each file within the folder
+      for (const resource of _result.resources) {
+        await cloudinary.v2.uploader.destroy(resource.public_id);
+      }
       const result = await CommentRepository.delete(id);
       return result;
     } catch (error) {
@@ -107,6 +122,14 @@ class CommentHandler implements ICommentHandler {
     try {
       const comment = await CommentRepository.getById(id);
       return comment;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllByTweet(tweetId: number): Promise<Comment[]> {
+    try {
+      const comments = await CommentRepository.getAllByTweet(tweetId);
+      return comments;
     } catch (error) {
       throw error;
     }

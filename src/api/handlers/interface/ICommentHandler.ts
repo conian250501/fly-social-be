@@ -1,8 +1,7 @@
-import { Comment } from "../../../database/entities/Comment";
-import { DeleteResult, UpdateResult } from "typeorm";
-import { IDataCreateLike } from "./ILikeHandler";
-import { Like } from "../../../database/entities/Like";
 import { ETypeLike } from "src/database/entities/interfaces/like.interface";
+import { DeleteResult, UpdateResult } from "typeorm";
+import { Comment } from "../../../database/entities/Comment";
+import { Like } from "../../../database/entities/Like";
 
 export interface IDataComment extends Omit<Comment, "tweet" | "user"> {
   tweetId: number;
@@ -21,4 +20,5 @@ export default interface ICommentHandler {
   upload(id: number, file: Express.Multer.File): Promise<string>;
   like(data: IDataLike): Promise<Like>;
   dislike(type: ETypeLike, commentId: number): Promise<DeleteResult>;
+  getAllByTweet(tweetId: number): Promise<Comment[]>;
 }

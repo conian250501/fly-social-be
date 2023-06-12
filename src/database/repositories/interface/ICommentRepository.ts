@@ -6,4 +6,5 @@ export default interface ICommentRepository {
   delete(id: number): Promise<DeleteResult>;
   update(id: number, data: Comment): Promise<UpdateResult>;
   getById(id: number): Promise<Comment>;
+  getAllByTweet(tweetId: number): Promise<Comment[]>;
 }
