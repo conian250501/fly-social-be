@@ -4,6 +4,7 @@ import authRouter from "./auth.router";
 import tweetRouter from "./tweetRouter";
 import commentRouter from "./comment.router";
 import likeRouter from "./like.router";
+import StorageTweetRouter from "./StorageTweetRouter";
 
 const router = Router();
 
@@ -13,6 +14,7 @@ class BaseRouter implements IRouter {
     router.use("/tweets", tweetRouter.routes);
     router.use("/comments", commentRouter.routes);
     router.use("/likes", likeRouter.routes);
+    router.use("/storage-tweets", StorageTweetRouter.routes);
     return router;
   }
 }

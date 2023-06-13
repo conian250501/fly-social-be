@@ -24,6 +24,9 @@ class TweetRepository implements ITweetRepository {
         likes: {
           user: true,
         },
+        storageTweets: {
+          user: true,
+        },
       },
     });
   }
@@ -40,6 +43,9 @@ class TweetRepository implements ITweetRepository {
         },
         user: true,
         likes: {
+          user: true,
+        },
+        storageTweets: {
           user: true,
         },
       },
@@ -60,6 +66,9 @@ class TweetRepository implements ITweetRepository {
           user: true,
         },
         likes: {
+          user: true,
+        },
+        storageTweets: {
           user: true,
         },
         user: true,

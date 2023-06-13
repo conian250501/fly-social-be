@@ -55,6 +55,12 @@ export const schemas = {
   updateCommentBody: Joi.object({
     content: Joi.string().max(255).allow(""),
   }),
+  saveTweetBody: Joi.object({
+    tweetId: Joi.number().required(),
+  }),
+  unSaveTweetParams: Joi.object({
+    tweetId: Joi.number().required(),
+  }),
 };
 
 export const routerHelper = {

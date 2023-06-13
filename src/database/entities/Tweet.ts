@@ -10,6 +10,7 @@ import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Like } from "./Like";
 import { User } from "./User";
+import { StorageTweet } from "./StorageTweet";
 
 @Entity({ name: "tweets" })
 export class Tweet extends BaseEntity {
@@ -38,4 +39,7 @@ export class Tweet extends BaseEntity {
 
   @Column({ name: "is_private", default: false })
   isPrivate: boolean;
+
+  @OneToMany(() => StorageTweet, (storage) => storage.tweet)
+  storageTweets: StorageTweet[];
 }

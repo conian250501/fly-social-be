@@ -5,7 +5,11 @@ import { User } from "./User";
 
 @Entity({ name: "storage_tweets" })
 export class StorageTweet extends BaseEntity {
-  @OneToOne(() => Tweet, { cascade: true, onDelete: "CASCADE" })
+  @ManyToOne(() => Tweet, {
+    cascade: true,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   @JoinColumn({ name: "tweet_id" })
   tweet: Tweet;
 
