@@ -17,6 +17,11 @@ export enum TypeAuth {
 export class User extends BaseEntity {
   @Column({ default: null })
   avatar: string;
+  @Column({ default: null })
+  cover: string;
+
+  @Column({ default: null })
+  bio: string;
 
   @Column({ default: null })
   email: string;

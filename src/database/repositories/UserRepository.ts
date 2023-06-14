@@ -19,6 +19,12 @@ class UserRepository implements IUserRepository {
   getById(id: number): Promise<User> {
     return this.repo.findOne({
       where: { id },
+      relations: {
+        tweets: true,
+        likes: true,
+        storageTweets: true,
+        comments: true,
+      },
     });
   }
 
