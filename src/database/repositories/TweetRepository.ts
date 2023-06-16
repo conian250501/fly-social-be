@@ -2,6 +2,7 @@ import { DeleteResult, Repository, UpdateResult } from "typeorm";
 import ITweetRepository from "./interface/ITweetRepository";
 import { Tweet } from "../entities/Tweet";
 import { AppDataSource } from "../data-source";
+import { IBaseFilter } from "../../api/common/interface";
 
 class TweetRepository implements ITweetRepository {
   repo: Repository<Tweet>;
@@ -9,7 +10,7 @@ class TweetRepository implements ITweetRepository {
     this.repo = AppDataSource.getRepository(Tweet);
   }
 
-  getAllByUser(userId: number): Promise<Tweet[]> {
+  getAllByUser(userId: number, { limit, page }: IBaseFilter): Promise<Tweet[]> {
     return this.repo.find({
       where: {
         user: {
@@ -27,7 +28,44 @@ class TweetRepository implements ITweetRepository {
         storageTweets: {
           user: true,
         },
+        user: true,
       },
+      order: {
+        createdAt: "DESC",
+      },
+      skip: page ? (page - 1) * limit : null,
+      take: limit ? limit : null,
+    });
+  }
+  getAllSaved(userId: number, { limit, page }: IBaseFilter): Promise<Tweet[]> {
+    return this.repo.find({
+      where: {
+        storageTweets: {
+          user: {
+            id: userId,
+          },
+        },
+      },
+      relations: {
+        comments: {
+          likes: true,
+          user: true,
+        },
+        likes: {
+          user: true,
+        },
+        storageTweets: {
+          user: true,
+        },
+        user: true,
+      },
+      order: {
+        storageTweets: {
+          createdAt: "DESC",
+        },
+      },
+      skip: page ? (page - 1) * limit : null,
+      take: limit ? limit : null,
     });
   }
 

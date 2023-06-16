@@ -9,6 +9,28 @@ import { routerHelper, schemas } from "../helpers/router.helper";
 const router = Router();
 class StorageTweetRouter implements IRouter {
   get routes() {
+    router.get(
+      "/get-by-user/:userId",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.getAllTweetsByUserParams),
+      routerHelper.validateQuery(schemas.filterQuery),
+      async (req, res) => {
+        try {
+          const { userId } = req.params;
+          const { limit, page } = req.query;
+          const tweets = await storageTweetHandler.getAllByUser(
+            Number(userId),
+            {
+              limit: Number(limit),
+              page: Number(page),
+            }
+          );
+          return successResponse(res, tweets);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
     router.post(
       "/",
       authMiddleware.authToken,

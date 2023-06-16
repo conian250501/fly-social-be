@@ -4,6 +4,8 @@ import IStorageTweetHandler from "./interface/IStorageTweetHandler";
 import { DeleteResult } from "typeorm";
 import TweetRepository from "../../database/repositories/TweetRepository";
 import UserRepository from "../../database/repositories/UserRepository";
+import { Tweet } from "src/database/entities/Tweet";
+import { IBaseFilter } from "../common/interface";
 
 class StorageTweetHandler implements IStorageTweetHandler {
   async saveTweet(tweetId: number, userId: number): Promise<StorageTweet> {
@@ -27,6 +29,21 @@ class StorageTweetHandler implements IStorageTweetHandler {
       );
       const result = await StorageTweetRepository.delete(storageTweet.id);
       return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]> {
+    try {
+      const storageTweets = await StorageTweetRepository.getAllByUser(
+        userId,
+        filter
+      );
+      const tweets: Tweet[] = [];
+      for (const item of storageTweets) {
+        tweets.push(item.tweet);
+      }
+      return tweets;
     } catch (error) {
       throw error;
     }

@@ -7,6 +7,7 @@ import LikeRepository from "../../database/repositories/LikeRepository";
 import TweetRepository from "../../database/repositories/TweetRepository";
 import UserRepository from "../../database/repositories/UserRepository";
 import ITweetHandler, { IDataLike } from "./interface/ITweetHander";
+import { IBaseFilter } from "../common/interface";
 
 class TweetHandler implements ITweetHandler {
   async create(userId: number, data: Tweet): Promise<Tweet> {
@@ -49,8 +50,6 @@ class TweetHandler implements ITweetHandler {
 
       const tweet = await TweetRepository.getById(id);
 
-      console.log(file.path);
-
       const { secure_url } = await cloudinary.v2.uploader.upload(file.path, {
         public_id: `file_${tweet.id}`,
         use_filename: true,
@@ -73,9 +72,18 @@ class TweetHandler implements ITweetHandler {
     }
   }
 
-  async getAllByUser(userId: number): Promise<Tweet[]> {
+  async getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]> {
     try {
-      const tweets = await TweetRepository.getAllByUser(userId);
+      const tweets = await TweetRepository.getAllByUser(userId, filter);
+      return tweets;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]> {
+    try {
+      const tweets = await TweetRepository.getAllSaved(userId, filter);
       return tweets;
     } catch (error) {
       throw error;

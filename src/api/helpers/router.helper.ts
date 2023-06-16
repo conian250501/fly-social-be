@@ -6,6 +6,10 @@ export const schemas = {
   params: Joi.object({
     id: Joi.number().required(),
   }),
+  filterQuery: Joi.object({
+    limit: Joi.number(),
+    page: Joi.number(),
+  }),
   authRegister: Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
@@ -60,6 +64,9 @@ export const schemas = {
   }),
   unSaveTweetParams: Joi.object({
     tweetId: Joi.number().required(),
+  }),
+  getAllTweetsByUserParams: Joi.object({
+    userId: Joi.number().required(),
   }),
 };
 
