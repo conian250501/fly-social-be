@@ -39,6 +39,12 @@ export class User extends BaseEntity {
   address: string;
 
   @Column({ default: null })
+  website: string;
+
+  @Column({ name: "birth_date", default: null })
+  birthDate: string;
+
+  @Column({ default: null })
   password: string;
 
   @Column({
