@@ -20,7 +20,8 @@ class MailService {
       });
 
       //GENERATE ACCESS_TOKEN
-      const accessToken = await this.mailService.getAccessToken();
+      const accessTokenObj = await this.mailService.getAccessToken();
+      const accessToken = accessTokenObj.token;
 
       //SEND MAIL
       const transporter = nodemailer.createTransport({
