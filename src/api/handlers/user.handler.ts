@@ -1,4 +1,4 @@
-
+import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../database/entities/User";
 
 import UserRepository from "../../database/repositories/UserRepository";
@@ -22,12 +22,20 @@ class UserHandler implements IUserHandler {
     }
   }
 
-
   async getById(id: number) {
     try {
       const user = await UserRepository.getById(id);
 
-      return user
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAccountLocalById(id: number): Promise<User> {
+    try {
+      const user = await UserRepository.getAccountLocalById(id);
+      return user;
     } catch (error) {
       throw error;
     }
@@ -51,9 +59,15 @@ class UserHandler implements IUserHandler {
     }
   }
 
-  async getAccountFacebook(typeAuth: TypeAuth, facebookId: string): Promise<User> {
+  async getAccountFacebook(
+    typeAuth: TypeAuth,
+    facebookId: string
+  ): Promise<User> {
     try {
-      const user = await UserRepository.getAccountFacebook(typeAuth, facebookId);
+      const user = await UserRepository.getAccountFacebook(
+        typeAuth,
+        facebookId
+      );
       return user;
     } catch (error) {
       throw error;
@@ -69,7 +83,14 @@ class UserHandler implements IUserHandler {
     }
   }
 
-
+  async update(id: number, data: User): Promise<UpdateResult> {
+    try {
+      const result = await UserRepository.update(id, data);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new UserHandler();

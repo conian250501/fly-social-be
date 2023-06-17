@@ -1,4 +1,5 @@
 
+import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../../database/entities/User";
 
 export default interface IUserHandler{
@@ -9,4 +10,6 @@ export default interface IUserHandler{
   getAccountFacebook(typeAuth:TypeAuth, facebookId:string): Promise<User>;
   getAccountGithub(typeAuth:TypeAuth, githubId:string): Promise<User>;
   getAccountLocal(typeAuth:TypeAuth, email:string): Promise<User>;
+  update(id:number,data:User): Promise<UpdateResult>;
+  getAccountLocalById(id:number): Promise<User>;
 }

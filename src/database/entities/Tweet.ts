@@ -1,8 +1,16 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Like } from "./Like";
 import { User } from "./User";
+import { StorageTweet } from "./StorageTweet";
 
 @Entity({ name: "tweets" })
 export class Tweet extends BaseEntity {
@@ -23,10 +31,15 @@ export class Tweet extends BaseEntity {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @ManyToMany(() => Like, (like) => like.tweets)
+  @OneToMany(() => Like, (like) => like.tweet)
   likes: Like[];
 
-  @ManyToMany(() => Comment, (like) => like.tweets)
+  @OneToMany(() => Comment, (like) => like.tweet)
   comments: Comment[];
 
+  @Column({ name: "is_private", default: false })
+  isPrivate: boolean;
+
+  @OneToMany(() => StorageTweet, (storage) => storage.tweet)
+  storageTweets: StorageTweet[];
 }

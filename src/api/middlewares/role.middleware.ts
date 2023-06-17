@@ -19,3 +19,5 @@ class RoleMiddleware {
     }
   }
 }
+
+export default new RoleMiddleware()
