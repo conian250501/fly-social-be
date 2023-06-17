@@ -68,6 +68,16 @@ export const schemas = {
   getAllTweetsByUserParams: Joi.object({
     userId: Joi.number().required(),
   }),
+  updateProfileBody: Joi.object({
+    name: Joi.string().allow(""),
+    nickname: Joi.string().allow(""),
+    bio: Joi.string().allow(""),
+    address: Joi.string().allow(""),
+    website: Joi.string().allow(""),
+    birthDate: Joi.string().allow(""),
+    cover: Joi.string().allow({}, ""),
+    avatar: Joi.string().allow({}, ""),
+  }),
 };
 
 export const routerHelper = {
