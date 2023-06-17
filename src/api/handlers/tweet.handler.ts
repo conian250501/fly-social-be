@@ -89,6 +89,14 @@ class TweetHandler implements ITweetHandler {
       throw error;
     }
   }
+  async getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]> {
+    try {
+      const tweets = await TweetRepository.getAllLiked(userId, filter);
+      return tweets;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async update(id: number, data: Tweet): Promise<UpdateResult> {
     try {

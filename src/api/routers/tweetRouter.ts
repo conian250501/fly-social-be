@@ -63,6 +63,25 @@ class TweetRouter implements IRouter {
       }
     );
     router.get(
+      "/liked/:userId",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.getAllTweetsByUserParams),
+      routerHelper.validateQuery(schemas.filterQuery),
+      async (req, res) => {
+        try {
+          const { userId } = req.params;
+          const { page, limit } = req.query;
+          const tweets = await tweetHandler.getAllLiked(Number(userId), {
+            limit: Number(limit),
+            page: Number(page),
+          });
+          return successResponse(res, tweets);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.get(
       "/:id",
       authMiddleware.authToken,
       routerHelper.validateParams(schemas.params),

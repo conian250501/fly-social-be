@@ -12,6 +12,7 @@ export interface IDataLike extends Omit<Like, "user" | "tweet"> {
 export default interface ITweetHandler {
   getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
+  getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getById(id: number): Promise<Tweet>;
   getAll(): Promise<Tweet[]>;
   create(userId: number, data: Tweet): Promise<Tweet>;

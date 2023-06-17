@@ -3,6 +3,7 @@ import ITweetRepository from "./interface/ITweetRepository";
 import { Tweet } from "../entities/Tweet";
 import { AppDataSource } from "../data-source";
 import { IBaseFilter } from "../../api/common/interface";
+import { ETypeLike } from "../entities/interfaces/like.interface";
 
 class TweetRepository implements ITweetRepository {
   repo: Repository<Tweet>;
@@ -66,6 +67,40 @@ class TweetRepository implements ITweetRepository {
       },
       skip: page ? (page - 1) * limit : null,
       take: limit ? limit : null,
+    });
+  }
+  getAllLiked(userId: number, { limit, page }: IBaseFilter): Promise<Tweet[]> {
+    const skip = page ? (page - 1) * limit : null;
+    const take = limit ? limit : null;
+    return this.repo.find({
+      where: {
+        likes: {
+          user: {
+            id: userId,
+          },
+          type: ETypeLike.Tweet,
+        },
+      },
+      relations: {
+        comments: {
+          likes: true,
+          user: true,
+        },
+        likes: {
+          user: true,
+        },
+        storageTweets: {
+          user: true,
+        },
+        user: true,
+      },
+      order: {
+        storageTweets: {
+          createdAt: "DESC",
+        },
+      },
+      skip: skip,
+      take: take,
     });
   }
 

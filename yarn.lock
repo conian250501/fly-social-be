@@ -311,12 +311,28 @@
   dependencies:
     "@types/node" "*"
 
+"@types/oauth@*", "@types/oauth@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@types/oauth/-/oauth-0.9.1.tgz#e17221e7f7936b0459ae7d006255dff61adca305"
+  integrity sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==
+  dependencies:
+    "@types/node" "*"
+
 "@types/passport-facebook-token@^0.4.35":
   version "0.4.35"
   resolved "https://registry.yarnpkg.com/@types/passport-facebook-token/-/passport-facebook-token-0.4.35.tgz#6a9bc3ab4902f165efb32e06bb1cc864635ee780"
   integrity sha512-dcqOtxIJfNcYiqxY2bbkSzx1iUlPYT+Q1N+Q/1WhxFtU4qD/z4mE2G35evX3QoZkHvD8nzHzrZpSyBp9QrOczw==
   dependencies:
     "@types/express" "*"
+    "@types/passport" "*"
+
+"@types/passport-oauth2@^1.4.12":
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/@types/passport-oauth2/-/passport-oauth2-1.4.12.tgz#c2ae0ee3b16646188d8b0b6cdbc6880a0247dc5f"
+  integrity sha512-RZg6cYTyEGinrZn/7REYQds6zrTxoBorX1/fdaz5UHzkG8xdFE7QQxkJagCr2ETzGII58FAFDmnmbTUVMrltNA==
+  dependencies:
+    "@types/express" "*"
+    "@types/oauth" "*"
     "@types/passport" "*"
 
 "@types/passport@*", "@types/passport@^1.0.12":
