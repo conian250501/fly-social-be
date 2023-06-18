@@ -78,6 +78,12 @@ export const schemas = {
     cover: Joi.string().allow({}, ""),
     avatar: Joi.string().allow({}, ""),
   }),
+  followUserBody: Joi.object({
+    userFollowedId: Joi.number().required(),
+  }),
+  unFollowUserBody: Joi.object({
+    userFollowedId: Joi.number().required(),
+  }),
 };
 
 export const routerHelper = {

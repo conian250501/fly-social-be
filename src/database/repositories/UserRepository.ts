@@ -24,6 +24,8 @@ class UserRepository implements IUserRepository {
         likes: true,
         storageTweets: true,
         comments: true,
+        followers: true,
+        followings: true,
       },
     });
   }
