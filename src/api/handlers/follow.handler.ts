@@ -10,6 +10,15 @@ class FollowHandler implements IFollowHandler {
       const user = await UserRepository.getById(userId);
       const userFollowing = await UserRepository.getById(userFollowedId);
 
+      const follow = await FollowRepository.getByUserAndUserFollowed(
+        userId,
+        userFollowedId
+      );
+
+      if (follow) {
+        throw new Error("You followed this user");
+      }
+
       const newFollow = await FollowRepository.create({
         user: user,
         follower: userFollowing,

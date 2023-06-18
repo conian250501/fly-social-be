@@ -3,12 +3,39 @@ import { TypeAuth, User } from "../../database/entities/User";
 import cloudinary from "cloudinary";
 import UserRepository from "../../database/repositories/UserRepository";
 import IUserHandler from "./interface/IUserHandler";
+import FollowRepository from "../../database/repositories/FollowRepository";
 
 class UserHandler implements IUserHandler {
   async getByEmail(email: string) {
     try {
       const user = await UserRepository.getByEmail(email);
       return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllUserFollowing(userId: number): Promise<User[]> {
+    try {
+      const followings = await FollowRepository.getAllByUser(userId);
+
+      const users: User[] = [];
+      for (const follow of followings) {
+        users.push(follow.follower);
+      }
+      return users;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllUserFollowers(userId: number): Promise<User[]> {
+    try {
+      const followings = await FollowRepository.getAllByFollower(userId);
+
+      const users: User[] = [];
+      for (const follow of followings) {
+        users.push(follow.user);
+      }
+      return users;
     } catch (error) {
       throw error;
     }

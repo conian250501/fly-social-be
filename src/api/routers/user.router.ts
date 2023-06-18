@@ -1,10 +1,11 @@
-import { Router } from "express";
+import { Response, Router } from "express";
 import IRouter from "./interface/IRouter";
 import authMiddleware from "../middlewares/auth.middleware";
 import { errorResponse, successResponse } from "./response";
 import { routerHelper, schemas } from "../helpers/router.helper";
 import userHandler from "../handlers/user.handler";
 import multer from "multer";
+import { IUserAuthInfoRequest } from "../types/interface";
 
 const router = Router();
 const uploader = multer({
@@ -54,6 +55,36 @@ class UserRouter implements IRouter {
           const { id } = req.params;
           const url = await userHandler.upload(Number(id), req.files);
           return successResponse(res, url);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.get(
+      "/followings/:userId",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { userId } = req.params;
+          const followings = await userHandler.getAllUserFollowing(
+            Number(userId)
+          );
+          return successResponse(res, followings);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.get(
+      "/followers/:userId",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { userId } = req.params;
+          const followings = await userHandler.getAllUserFollowers(
+            Number(userId)
+          );
+          return successResponse(res, followings);
         } catch (error) {
           return errorResponse(res, error);
         }

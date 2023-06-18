@@ -79,9 +79,9 @@ export class User extends BaseEntity {
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Like[];
 
-  @OneToMany(() => Follow, (follow) => follow.user)
+  @OneToMany(() => Follow, (follow) => follow.follower)
   followers: Follow[];
 
-  @OneToMany(() => Follow, (follow) => follow.follower)
+  @OneToMany(() => Follow, (follow) => follow.user)
   followings: Follow[];
 }

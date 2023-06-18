@@ -22,6 +22,33 @@ class FollowRepository implements IFollowRepository {
       },
     });
   }
+  getAllByUser(userId: number): Promise<Follow[]> {
+    return this.repo.find({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      relations: {
+        follower: true,
+        user: true,
+      },
+    });
+  }
+  getAllByFollower(followerId: number): Promise<Follow[]> {
+    return this.repo.find({
+      where: {
+        follower: {
+          id: followerId,
+        },
+      },
+      relations: {
+        follower: true,
+        user: true,
+      },
+    });
+  }
+
   getByUserAndUserFollowed(
     userId: number,
     userFollowedId: number
