@@ -36,7 +36,7 @@ export const schemas = {
 
   createTweetBody: Joi.object({
     file: Joi.string().allow(null, {}, ""),
-    content: Joi.string().max(255).required(),
+    content: Joi.string().max(255).required().allow(""),
     isPrivate: Joi.boolean().required(),
   }),
   updateTweetParams: Joi.object({

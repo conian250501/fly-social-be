@@ -30,8 +30,26 @@ class FollowRepository implements IFollowRepository {
         },
       },
       relations: {
-        follower: true,
-        user: true,
+        follower: {
+          followers: {
+            user: true,
+            follower: true,
+          },
+          followings: {
+            user: true,
+            follower: true,
+          },
+        },
+        user: {
+          followers: {
+            user: true,
+            follower: true,
+          },
+          followings: {
+            user: true,
+            follower: true,
+          },
+        },
       },
     });
   }
@@ -43,8 +61,26 @@ class FollowRepository implements IFollowRepository {
         },
       },
       relations: {
-        follower: true,
-        user: true,
+        follower: {
+          followers: {
+            user: true,
+            follower: true,
+          },
+          followings: {
+            user: true,
+            follower: true,
+          },
+        },
+        user: {
+          followers: {
+            user: true,
+            follower: true,
+          },
+          followings: {
+            user: true,
+            follower: true,
+          },
+        },
       },
     });
   }

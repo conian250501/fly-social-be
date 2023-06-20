@@ -29,10 +29,10 @@ class UserHandler implements IUserHandler {
   }
   async getAllUserFollowers(userId: number): Promise<User[]> {
     try {
-      const followings = await FollowRepository.getAllByFollower(userId);
+      const followers = await FollowRepository.getAllByFollower(userId);
 
       const users: User[] = [];
-      for (const follow of followings) {
+      for (const follow of followers) {
         users.push(follow.user);
       }
       return users;
