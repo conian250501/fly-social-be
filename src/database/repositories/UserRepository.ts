@@ -24,10 +24,42 @@ class UserRepository implements IUserRepository {
         likes: true,
         storageTweets: true,
         comments: true,
+        followers: true,
+        followings: true,
       },
     });
   }
 
+  getAllUserFollowing(userId: number): Promise<User[]> {
+    return this.repo.find({
+      where: {
+        followings: {
+          user: {
+            id: userId,
+          },
+        },
+      },
+      relations: {
+        followers: true,
+        followings: true,
+      },
+    });
+  }
+  getAllUserFollowers(userId: number): Promise<User[]> {
+    return this.repo.find({
+      where: {
+        followers: {
+          follower: {
+            id: userId,
+          },
+        },
+      },
+      relations: {
+        followers: true,
+        followings: true,
+      },
+    });
+  }
   getAccountLocalById(id: number): Promise<User> {
     return this.repo.findOne({
       where: {

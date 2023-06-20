@@ -39,6 +39,12 @@ export class User extends BaseEntity {
   address: string;
 
   @Column({ default: null })
+  website: string;
+
+  @Column({ name: "birth_date", default: null })
+  birthDate: string;
+
+  @Column({ default: null })
   password: string;
 
   @Column({
@@ -76,6 +82,6 @@ export class User extends BaseEntity {
   @OneToMany(() => Follow, (follow) => follow.follower)
   followers: Follow[];
 
-  @OneToMany(() => Follow, (follow) => follow.following)
+  @OneToMany(() => Follow, (follow) => follow.user)
   followings: Follow[];
 }

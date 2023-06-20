@@ -9,14 +9,14 @@ export class Follow extends BaseEntity {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
-  @JoinColumn({ name: "follower_id" })
-  follower: User;
+  @JoinColumn({ name: "user_id" })
+  user: User;
 
   @ManyToOne(() => User, (user) => user.followings, {
     cascade: true,
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
-  @JoinColumn({ name: "following_id" })
-  following: User;
+  @JoinColumn({ name: "follower_id" })
+  follower: User;
 }
