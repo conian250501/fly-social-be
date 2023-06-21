@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --build --clean && tsc",
     "lint": "eslint src/**/*.ts",
-    "start": "yarn install && node dist/index.js",
+    "start": "node dist/index.js",
     "dev": "nodemon src/index.ts --watch",
     "db:generate": "typeorm-ts-node-commonjs migration:generate -d ./src/database/data-source.ts --pretty",
     "db:migrate": "typeorm-ts-node-commonjs migration:run -d ./src/database/data-source.ts",
@@ -36,8 +36,7 @@
     "passport-google-oauth-token": "^1.0.6",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.6",
-    "typeorm-seeding": "^1.6.1"
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
