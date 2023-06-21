@@ -8,6 +8,8 @@ import TweetRepository from "../../database/repositories/TweetRepository";
 import UserRepository from "../../database/repositories/UserRepository";
 import ITweetHandler, { IDataLike } from "./interface/ITweetHander";
 import { IBaseFilter } from "../common/interface";
+import FollowRepository from "../../database/repositories/FollowRepository";
+import { User } from "../../database/entities/User";
 
 class TweetHandler implements ITweetHandler {
   async create(userId: number, data: Tweet): Promise<Tweet> {
@@ -28,6 +30,24 @@ class TweetHandler implements ITweetHandler {
     try {
       const tweets = await TweetRepository.getAll();
       return tweets;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAllFollowing(userId: number): Promise<Tweet[]> {
+    try {
+      const usersFollowing = await FollowRepository.getAllByUser(userId);
+
+      const users: User[] = [];
+      for (const follow of usersFollowing) {
+        users.push(follow.follower);
+      }
+
+      const followedTweets = users.flatMap(
+        (followedUser) => followedUser.tweets
+      );
+      console.log({ followedTweets });
+      return followedTweets;
     } catch (error) {
       throw error;
     }

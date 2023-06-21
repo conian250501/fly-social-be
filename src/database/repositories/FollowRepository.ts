@@ -31,6 +31,19 @@ class FollowRepository implements IFollowRepository {
       },
       relations: {
         follower: {
+          tweets: {
+            comments: {
+              likes: true,
+              user: true,
+            },
+            likes: {
+              user: true,
+            },
+            storageTweets: {
+              user: true,
+            },
+            user: true,
+          },
           followers: {
             user: true,
             follower: true,
@@ -41,6 +54,19 @@ class FollowRepository implements IFollowRepository {
           },
         },
         user: {
+          tweets: {
+            comments: {
+              likes: true,
+              user: true,
+            },
+            likes: {
+              user: true,
+            },
+            storageTweets: {
+              user: true,
+            },
+            user: true,
+          },
           followers: {
             user: true,
             follower: true,

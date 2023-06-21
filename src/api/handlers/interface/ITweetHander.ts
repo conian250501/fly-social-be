@@ -2,7 +2,7 @@ import { DeleteResult, UpdateResult } from "typeorm";
 import { Like } from "../../../database/entities/Like";
 import { Tweet } from "../../../database/entities/Tweet";
 import { ETypeLike } from "../../../database/entities/interfaces/like.interface";
-import { IBaseFilter } from "src/api/common/interface";
+import { IBaseFilter } from "../../../api/common/interface";
 
 export interface IDataLike extends Omit<Like, "user" | "tweet"> {
   userId: number;
@@ -11,6 +11,7 @@ export interface IDataLike extends Omit<Like, "user" | "tweet"> {
 
 export default interface ITweetHandler {
   getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
+  getAllFollowing(userId: number): Promise<Tweet[]>;
   getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getById(id: number): Promise<Tweet>;

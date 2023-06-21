@@ -24,6 +24,18 @@ class TweetRouter implements IRouter {
       }
     });
     router.get(
+      "/following",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const tweets = await tweetHandler.getAllFollowing(req.user.id);
+          return successResponse(res, tweets);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+    router.get(
       "/get-by-user/:userId",
       authMiddleware.authToken,
       routerHelper.validateParams(schemas.getAllTweetsByUserParams),
