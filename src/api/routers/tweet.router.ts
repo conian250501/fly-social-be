@@ -28,7 +28,11 @@ class TweetRouter implements IRouter {
       authMiddleware.authToken,
       async (req: IUserAuthInfoRequest, res: Response) => {
         try {
-          const tweets = await tweetHandler.getAllFollowing(req.user.id);
+          const { page, limit } = req.query;
+          const tweets = await tweetHandler.getAllFollowing(req.user.id, {
+            limit: Number(limit),
+            page: Number(page),
+          });
           return successResponse(res, tweets);
         } catch (error) {
           return errorResponse(res, error);

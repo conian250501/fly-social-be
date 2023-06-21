@@ -34,7 +34,10 @@ class TweetHandler implements ITweetHandler {
       throw error;
     }
   }
-  async getAllFollowing(userId: number): Promise<Tweet[]> {
+  async getAllFollowing(
+    userId: number,
+    { page, limit }: IBaseFilter
+  ): Promise<Tweet[]> {
     try {
       const usersFollowing = await FollowRepository.getAllByUser(userId);
 
@@ -43,11 +46,14 @@ class TweetHandler implements ITweetHandler {
         users.push(follow.follower);
       }
 
-      const followedTweets = users.flatMap(
-        (followedUser) => followedUser.tweets
-      );
-      console.log({ followedTweets });
-      return followedTweets;
+      const followedTweets = users
+        .flatMap((followedUser) => followedUser.tweets)
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const paginatedTweets = followedTweets.slice(startIndex, endIndex);
+      return paginatedTweets;
     } catch (error) {
       throw error;
     }
