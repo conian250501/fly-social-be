@@ -24,8 +24,14 @@ class UserRepository implements IUserRepository {
         likes: true,
         storageTweets: true,
         comments: true,
-        followers: true,
-        followings: true,
+        followers: {
+          user: true,
+          follower: true,
+        },
+        followings: {
+          user: true,
+          follower: true,
+        },
       },
     });
   }
@@ -40,8 +46,14 @@ class UserRepository implements IUserRepository {
         },
       },
       relations: {
-        followers: true,
-        followings: true,
+        followers: {
+          user: true,
+          follower: true,
+        },
+        followings: {
+          user: true,
+          follower: true,
+        },
       },
     });
   }
@@ -55,8 +67,14 @@ class UserRepository implements IUserRepository {
         },
       },
       relations: {
-        followers: true,
-        followings: true,
+        followers: {
+          user: true,
+          follower: true,
+        },
+        followings: {
+          user: true,
+          follower: true,
+        },
       },
     });
   }
