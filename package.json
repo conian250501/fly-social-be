@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --build --clean && tsc",
     "lint": "eslint src/**/*.ts",
-    "start": "yarn lint && yarn build && node dist/index.js",
+    "start": "yarn lint && yarn --max_old_space_size=4096 build && node dist/index.js",
     "dev": "nodemon src/index.ts --watch",
     "db:generate": "typeorm-ts-node-commonjs migration:generate -d ./src/database/data-source.ts --pretty",
     "db:migrate": "typeorm-ts-node-commonjs migration:run -d ./src/database/data-source.ts",
