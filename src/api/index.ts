@@ -4,21 +4,21 @@ import "./middlewares/passport.middleware";
 import BaseRouter from "./routers";
 
 interface IApi {
-  server(): Promise<Application>
+  server(): Promise<Application>;
 }
 
-class Api implements IApi{
+class Api implements IApi {
   async server(): Promise<Application> {
-      const app = express();
-      app.use(cors());
-      app.use(express.json({limit: '100mb'}));
-      app.use(express.urlencoded({ extended: true }));
-      app.use("/api/v1", BaseRouter.routes);
-  
-      app.get("/", (_req: Request, res: Response) => {
-        res.send("Welcome to NUS express application!");
-      });
-      return app;
+    const app = express();
+    app.use(cors());
+    app.use(express.json({ limit: "100mb" }));
+    app.use(express.urlencoded({ extended: true }));
+    app.use("/api/v1", BaseRouter.routes);
+
+    app.get("/", (_req: Request, res: Response) => {
+      res.send("Welcome to Fly Social API application!");
+    });
+    return app;
   }
 }
 

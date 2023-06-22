@@ -26,9 +26,9 @@ class TweetHandler implements ITweetHandler {
     }
   }
 
-  async getAll(): Promise<Tweet[]> {
+  async getAll(filter: IBaseFilter): Promise<Tweet[]> {
     try {
-      const tweets = await TweetRepository.getAll();
+      const tweets = await TweetRepository.getAll(filter);
       return tweets;
     } catch (error) {
       throw error;

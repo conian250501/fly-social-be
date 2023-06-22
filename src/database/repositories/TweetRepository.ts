@@ -104,7 +104,7 @@ class TweetRepository implements ITweetRepository {
     });
   }
 
-  getAll(): Promise<Tweet[]> {
+  getAll({ page, limit }: IBaseFilter): Promise<Tweet[]> {
     return this.repo.find({
       where: {
         isPrivate: false,
@@ -122,6 +122,8 @@ class TweetRepository implements ITweetRepository {
           user: true,
         },
       },
+      skip: page ? (page - 1) * limit : null,
+      take: limit ? limit : null,
       order: {
         createdAt: "DESC",
       },

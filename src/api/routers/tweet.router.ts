@@ -17,7 +17,11 @@ class TweetRouter implements IRouter {
   get routes() {
     router.get("/", async (req, res) => {
       try {
-        const tweets = await tweetHandler.getAll();
+        const { limit, page } = req.query;
+        const tweets = await tweetHandler.getAll({
+          limit: Number(limit),
+          page: Number(page),
+        });
         return successResponse(res, tweets);
       } catch (error) {
         return errorResponse(res, error);

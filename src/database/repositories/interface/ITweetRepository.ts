@@ -6,7 +6,7 @@ export default interface ITweetRepository {
   getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
-  getAll(): Promise<Tweet[]>;
+  getAll(filter: IBaseFilter): Promise<Tweet[]>;
   getById(id: number): Promise<Tweet>;
   create(data: Tweet): Promise<Tweet>;
   update(id: number, data: Tweet): Promise<UpdateResult>;
