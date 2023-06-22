@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "outDir": "./src/dist",
+    "outDir": "dist",
     "baseUrl": "."
   },
   "include": ["src"],
