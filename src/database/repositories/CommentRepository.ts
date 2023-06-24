@@ -24,7 +24,6 @@ class CommentRepository implements ICommentRepository {
         },
         tweet: {
           user: true,
-          likes: true,
         },
         user: true,
       },
