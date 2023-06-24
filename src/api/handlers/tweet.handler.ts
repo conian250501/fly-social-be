@@ -48,6 +48,7 @@ class TweetHandler implements ITweetHandler {
 
       const followedTweets = users
         .flatMap((followedUser) => followedUser.tweets)
+        .filter((tweet) => tweet.isPrivate === false)
         .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
       const startIndex = (page - 1) * limit;

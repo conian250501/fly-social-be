@@ -21,6 +21,7 @@ class CommentHandler implements ICommentHandler {
         ...data,
         tweet: tweet,
         user: user,
+        likes: [],
       });
       return newComment;
     } catch (error) {
