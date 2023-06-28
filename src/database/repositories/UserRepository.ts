@@ -1,13 +1,35 @@
-import { Repository, UpdateResult } from "typeorm";
+import { In, Not, Repository, UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../entities/User";
 import IUserRepository from "./interface/IUserRepository";
 import { AppDataSource } from "../data-source";
+import { IBaseFilter } from "../../api/common/interface";
 
 class UserRepository implements IUserRepository {
   repo: Repository<User>;
 
   constructor() {
     this.repo = AppDataSource.getRepository(User);
+  }
+
+  getAll({ page, limit }: IBaseFilter): Promise<[User[], number]> {
+    return this.repo.findAndCount({
+      relations: {
+        tweets: true,
+        likes: true,
+        storageTweets: true,
+        comments: true,
+        followers: {
+          user: true,
+          follower: true,
+        },
+        followings: {
+          user: true,
+          follower: true,
+        },
+      },
+      take: limit ? limit : null,
+      skip: page ? (page - 1) * limit : null,
+    });
   }
 
   getByEmail(email: string): Promise<User> {
@@ -128,6 +150,19 @@ class UserRepository implements IUserRepository {
 
   update(id: number, data: User): Promise<UpdateResult> {
     return this.repo.update(id, data);
+  }
+  getUserFollowedYet(
+    userId: number,
+    ids: number[],
+    { page, limit }: IBaseFilter
+  ): Promise<[User[], number]> {
+    return this.repo.findAndCount({
+      where: {
+        id: Not(In([userId, ...ids])),
+      },
+      take: limit ? limit : null,
+      skip: page ? (page - 1) * limit : null,
+    });
   }
 }
 

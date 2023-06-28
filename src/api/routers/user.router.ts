@@ -90,6 +90,31 @@ class UserRouter implements IRouter {
         }
       }
     );
+
+    router.get(
+      "/followed-yet/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      routerHelper.validateQuery(schemas.filterQuery),
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { id } = req.params;
+          const { page, limit } = req.query;
+          const { users, total } = await userHandler.getAllFollowingYet(
+            Number(id),
+            {
+              limit: Number(limit),
+              page: Number(page),
+            }
+          );
+          const totalPage = Math.ceil(total / Number(limit));
+          return successResponse(res, { users, page: Number(page), totalPage });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+
     return router;
   }
 }
