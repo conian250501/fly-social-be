@@ -4,6 +4,7 @@ import cloudinary from "cloudinary";
 import UserRepository from "../../database/repositories/UserRepository";
 import IUserHandler from "./interface/IUserHandler";
 import FollowRepository from "../../database/repositories/FollowRepository";
+import { IBaseFilter } from "../common/interface";
 
 class UserHandler implements IUserHandler {
   async getByEmail(email: string) {
@@ -169,6 +170,27 @@ class UserHandler implements IUserHandler {
       }
 
       return { message: `Upload image successfully` };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllFollowingYet(
+    userId: number,
+    filter: IBaseFilter
+  ): Promise<{ users: User[]; total: number }> {
+    try {
+      const myFollowings = await UserRepository.getById(userId);
+      const followingIds = myFollowings.followings.map(
+        (user) => user.follower.id
+      );
+      const [users, total] = await UserRepository.getUserFollowedYet(
+        userId,
+        followingIds,
+        filter
+      );
+
+      return { users, total };
     } catch (error) {
       throw error;
     }

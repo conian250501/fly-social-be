@@ -1,5 +1,6 @@
 import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../../database/entities/User";
+import { IBaseFilter } from "../../common/interface";
 
 export default interface IUserHandler {
   getByEmail(email: string): Promise<User>;
@@ -21,4 +22,8 @@ export default interface IUserHandler {
           [fieldname: string]: Express.Multer.File[];
         }
   ): Promise<{ message: string }>;
+  getAllFollowingYet(
+    userId: number,
+    filter: IBaseFilter
+  ): Promise<{ users: User[]; total: number }>;
 }
