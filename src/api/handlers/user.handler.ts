@@ -5,8 +5,9 @@ import UserRepository from "../../database/repositories/UserRepository";
 import IUserHandler from "./interface/IUserHandler";
 import FollowRepository from "../../database/repositories/FollowRepository";
 import { IBaseFilter } from "../common/interface";
+import { UserBaseHandler } from "./base/userBaseHandler";
 
-class UserHandler implements IUserHandler {
+class UserHandler extends UserBaseHandler implements IUserHandler {
   async getByEmail(email: string) {
     try {
       const user = await UserRepository.getByEmail(email);
