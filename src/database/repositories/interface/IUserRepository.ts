@@ -1,7 +1,9 @@
 import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../entities/User";
 import { IBaseFilter } from "../../../api/common/interface";
-
+export interface IFilterGetUsers extends IBaseFilter {
+  name: string;
+}
 export default interface IUserRepository {
   getByEmail(email: string): Promise<User>;
   getById(id: number): Promise<User>;
@@ -14,7 +16,7 @@ export default interface IUserRepository {
   create(data: User): Promise<User>;
   update(id: number, data: User): Promise<UpdateResult>;
   getAccountLocalById(id: number): Promise<User>;
-  getAll(filter: IBaseFilter): Promise<[User[], number]>;
+  getAll(filter: IFilterGetUsers): Promise<[User[], number]>;
   getUserFollowedYet(
     userId: number,
     ids: number[],

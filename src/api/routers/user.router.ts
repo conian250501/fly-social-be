@@ -14,6 +14,20 @@ const uploader = multer({
 
 class UserRouter implements IRouter {
   get routes() {
+    router.get("/", authMiddleware.authToken, async (req, res) => {
+      try {
+        const { name, limit, page } = req.query;
+        const { users, total } = await userHandler.getAll({
+          name: String(name),
+          limit: Number(limit),
+          page: Number(page),
+        });
+        const totalPage = Math.ceil(total / Number(limit));
+        return successResponse(res, { users, page: Number(page), totalPage });
+      } catch (error) {
+        return errorResponse(res, error);
+      }
+    });
     router.get(
       "/:id",
       authMiddleware.authToken,

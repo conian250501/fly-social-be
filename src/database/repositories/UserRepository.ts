@@ -1,6 +1,6 @@
-import { In, Not, Repository, UpdateResult } from "typeorm";
+import { ILike, In, Like, Not, Repository, UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../entities/User";
-import IUserRepository from "./interface/IUserRepository";
+import IUserRepository, { IFilterGetUsers } from "./interface/IUserRepository";
 import { AppDataSource } from "../data-source";
 import { IBaseFilter } from "../../api/common/interface";
 
@@ -11,21 +11,10 @@ class UserRepository implements IUserRepository {
     this.repo = AppDataSource.getRepository(User);
   }
 
-  getAll({ page, limit }: IBaseFilter): Promise<[User[], number]> {
+  getAll({ page, limit, name }: IFilterGetUsers): Promise<[User[], number]> {
     return this.repo.findAndCount({
-      relations: {
-        tweets: true,
-        likes: true,
-        storageTweets: true,
-        comments: true,
-        followers: {
-          user: true,
-          follower: true,
-        },
-        followings: {
-          user: true,
-          follower: true,
-        },
+      where: {
+        name: ILike(`%${name}%`),
       },
       take: limit ? limit : null,
       skip: page ? (page - 1) * limit : null,

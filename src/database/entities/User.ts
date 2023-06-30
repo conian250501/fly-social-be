@@ -84,4 +84,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Follow, (follow) => follow.user)
   followings: Follow[];
+
+  @Column({ default: false })
+  verified: boolean;
 }
