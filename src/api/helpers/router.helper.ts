@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { errorResponse } from "../routers/response";
+import { EGender } from "../../database/entities/interfaces/user.interface";
 
 export const schemas = {
   params: Joi.object({
@@ -77,6 +78,8 @@ export const schemas = {
     birthDate: Joi.string().allow(""),
     cover: Joi.string().allow({}, ""),
     avatar: Joi.string().allow({}, ""),
+    phone: Joi.string().allow(""),
+    gender: Joi.string().valid(EGender.Female, EGender.Male, EGender.Other),
   }),
   followUserBody: Joi.object({
     userFollowedId: Joi.number().required(),
