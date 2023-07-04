@@ -5,6 +5,7 @@ import { Follow } from "./Follow";
 import { Like } from "./Like";
 import { StorageTweet } from "./StorageTweet";
 import { Tweet } from "./Tweet";
+import { EGender } from "./interfaces/user.interface";
 
 export enum TypeAuth {
   LOCAL = "local",
@@ -46,6 +47,9 @@ export class User extends BaseEntity {
 
   @Column({ default: null })
   password: string;
+
+  @Column({ type: "enum", enum: EGender, default: null })
+  gender: EGender;
 
   @Column({
     name: "type_auth",
