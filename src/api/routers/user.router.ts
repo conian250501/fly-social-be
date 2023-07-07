@@ -129,6 +129,24 @@ class UserRouter implements IRouter {
       }
     );
 
+    router.put(
+      "/update-password/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      routerHelper.validateBody(schemas.updatePassword),
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { id } = req.params;
+          await userHandler.updatePassword(req.body, Number(id));
+          return successResponse(res, {
+            message: "Your password Updated successfully",
+          });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+
     return router;
   }
 }
