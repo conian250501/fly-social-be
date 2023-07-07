@@ -37,6 +37,12 @@ export class UserBaseHandler implements IUserBaseHandler {
       const { currentPassword, newPassword } = data;
       const user = await UserRepository.getAccountLocalById(userId);
 
+      if (!user) {
+        throw new Error(
+          `User login by ${user.typeAuth} so don't have password`
+        );
+      }
+
       const isValidCurrentPassword = await bcrypt.compare(
         currentPassword,
         user.password
