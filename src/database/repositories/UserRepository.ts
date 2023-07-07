@@ -93,6 +93,7 @@ class UserRepository implements IUserRepository {
     return this.repo.findOne({
       where: {
         id: id,
+        typeAuth: TypeAuth.LOCAL,
       },
     });
   }

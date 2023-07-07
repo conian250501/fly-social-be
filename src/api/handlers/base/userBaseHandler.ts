@@ -39,7 +39,7 @@ export class UserBaseHandler implements IUserBaseHandler {
 
       if (!user) {
         throw new Error(
-          `User login by ${user.typeAuth} so don't have password`
+          `User login different username and password so don't have password`
         );
       }
 
