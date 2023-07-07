@@ -87,6 +87,11 @@ export const schemas = {
   unFollowUserBody: Joi.object({
     userFollowedId: Joi.number().required(),
   }),
+  updatePassword: Joi.object({
+    currentPassword: Joi.string().required(),
+    newPassword: Joi.string().required(),
+    confirmPassword: Joi.string().required(),
+  }),
 };
 
 export const routerHelper = {
