@@ -109,16 +109,18 @@ class UserRouter implements IRouter {
       "/followed-yet/:id",
       authMiddleware.authToken,
       routerHelper.validateParams(schemas.params),
-      routerHelper.validateQuery(schemas.filterQuery),
+      routerHelper.validateQuery(schemas.getUsersQuery),
       async (req: IUserAuthInfoRequest, res: Response) => {
         try {
           const { id } = req.params;
-          const { page, limit } = req.query;
+          const { page, limit, name } = req.query;
+
           const { users, total } = await userHandler.getAllFollowingYet(
             Number(id),
             {
               limit: Number(limit),
               page: Number(page),
+              name: String(name),
             }
           );
           const totalPage = Math.ceil(total / Number(limit));

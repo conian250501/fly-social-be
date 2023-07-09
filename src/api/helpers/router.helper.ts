@@ -92,6 +92,11 @@ export const schemas = {
     newPassword: Joi.string().required(),
     confirmPassword: Joi.string().required(),
   }),
+  getUsersQuery: Joi.object({
+    limit: Joi.number(),
+    page: Joi.number(),
+    name: Joi.string().allow(""),
+  }),
 };
 
 export const routerHelper = {

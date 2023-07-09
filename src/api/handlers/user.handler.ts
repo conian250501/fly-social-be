@@ -1,11 +1,11 @@
+import cloudinary from "cloudinary";
 import { UpdateResult } from "typeorm";
 import { TypeAuth, User } from "../../database/entities/User";
-import cloudinary from "cloudinary";
-import UserRepository from "../../database/repositories/UserRepository";
-import IUserHandler from "./interface/IUserHandler";
 import FollowRepository from "../../database/repositories/FollowRepository";
-import { IBaseFilter } from "../common/interface";
+import UserRepository from "../../database/repositories/UserRepository";
+import { IFilterGetUsers } from "../../database/repositories/interface/IUserRepository";
 import { UserBaseHandler } from "./base/userBaseHandler";
+import IUserHandler from "./interface/IUserHandler";
 
 class UserHandler extends UserBaseHandler implements IUserHandler {
   async getByEmail(email: string) {
@@ -178,7 +178,7 @@ class UserHandler extends UserBaseHandler implements IUserHandler {
 
   async getAllFollowingYet(
     userId: number,
-    filter: IBaseFilter
+    filter: IFilterGetUsers
   ): Promise<{ users: User[]; total: number }> {
     try {
       const myFollowings = await UserRepository.getById(userId);

@@ -20,6 +20,6 @@ export default interface IUserRepository {
   getUserFollowedYet(
     userId: number,
     ids: number[],
-    filter: IBaseFilter
+    filter: IFilterGetUsers
   ): Promise<[User[], number]>;
 }
