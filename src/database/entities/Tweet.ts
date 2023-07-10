@@ -1,19 +1,16 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Like } from "./Like";
-import { User } from "./User";
 import { StorageTweet } from "./StorageTweet";
+import { User } from "./User";
+import { ETweetStatus } from "./interfaces/tweet.interface";
 
 @Entity({ name: "tweets" })
 export class Tweet extends BaseEntity {
+  @Column({ type: "enum", enum: ETweetStatus, default: ETweetStatus.New })
+  status: ETweetStatus;
+
   @Column({ default: null })
   content: string;
 

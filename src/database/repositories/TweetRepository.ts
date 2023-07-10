@@ -1,9 +1,12 @@
 import { DeleteResult, Repository, UpdateResult } from "typeorm";
-import ITweetRepository from "./interface/ITweetRepository";
+import ITweetRepository, {
+  IFilterGetTweets,
+} from "./interface/ITweetRepository";
 import { Tweet } from "../entities/Tweet";
 import { AppDataSource } from "../data-source";
 import { IBaseFilter } from "../../api/common/interface";
 import { ETypeLike } from "../entities/interfaces/like.interface";
+import { ETweetStatus } from "../entities/interfaces/tweet.interface";
 
 class TweetRepository implements ITweetRepository {
   repo: Repository<Tweet>;
@@ -11,12 +14,16 @@ class TweetRepository implements ITweetRepository {
     this.repo = AppDataSource.getRepository(Tweet);
   }
 
-  getAllByUser(userId: number, { limit, page }: IBaseFilter): Promise<Tweet[]> {
+  getAllByUser(
+    userId: number,
+    { limit, page, status }: IFilterGetTweets
+  ): Promise<Tweet[]> {
     return this.repo.find({
       where: {
         user: {
           id: userId,
         },
+        status: status ? status : ETweetStatus.New,
       },
       relations: {
         comments: {
@@ -46,6 +53,7 @@ class TweetRepository implements ITweetRepository {
             id: userId,
           },
         },
+        status: ETweetStatus.New,
       },
       relations: {
         comments: {
@@ -80,6 +88,7 @@ class TweetRepository implements ITweetRepository {
           },
           type: ETypeLike.Tweet,
         },
+        status: ETweetStatus.New,
       },
       relations: {
         comments: {
@@ -108,6 +117,7 @@ class TweetRepository implements ITweetRepository {
     return this.repo.find({
       where: {
         isPrivate: false,
+        status: ETweetStatus.New,
       },
       relations: {
         comments: {
@@ -134,6 +144,7 @@ class TweetRepository implements ITweetRepository {
     return this.repo.findOne({
       where: {
         id: id,
+        status: ETweetStatus.New,
       },
       relations: {
         comments: {

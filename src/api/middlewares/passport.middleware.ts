@@ -28,7 +28,10 @@ passport.use(
         if (userExist) {
           const newToken = jwt.sign(
             { id: userExist.id },
-            process.env.JWT_SECRET
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1d",
+            }
           );
           return done(null, { ...userExist, token: newToken });
         }
@@ -40,7 +43,9 @@ passport.use(
           typeAuth: TypeAuth.GOOGLE,
           avatar: profile.photos[0].value,
         } as User);
-        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+          expiresIn: "1d",
+        });
 
         return done(null, { ...newUser, token: newToken });
       } catch (error) {
@@ -67,7 +72,10 @@ passport.use(
         if (userExist) {
           const newToken = jwt.sign(
             { id: userExist.id },
-            process.env.JWT_SECRET
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1d",
+            }
           );
           return done(null, { ...userExist, token: newToken });
         }
@@ -78,7 +86,9 @@ passport.use(
           typeAuth: TypeAuth.FACEBOOK,
           avatar: profile.photos[0].value,
         } as User);
-        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+          expiresIn: "1d",
+        });
 
         return done(null, { ...newUser, token: newToken });
       } catch (error) {
@@ -109,7 +119,10 @@ passport.use(
         if (userExist) {
           const newToken = jwt.sign(
             { id: userExist.id },
-            process.env.JWT_SECRET
+            process.env.JWT_SECRET,
+            {
+              expiresIn: "1d",
+            }
           );
           return done(null, { ...userExist, token: newToken });
         }
@@ -120,7 +133,9 @@ passport.use(
           typeAuth: TypeAuth.GITHUB,
           avatar: profile._json.avatar_url,
         } as User);
-        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
+          expiresIn: "1d",
+        });
 
         return done(null, { ...newUser, token: newToken });
       } catch (error) {

@@ -27,7 +27,7 @@ class AuthMiddleware {
         process.env.JWT_SECRET
       );
 
-      if (Date.now() >= result.exp * 1000) {
+      if (new Date().getTime() >= result.exp * 1000) {
         return errorResponse(res, new Error("Token expired"), 401);
       }
 

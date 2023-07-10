@@ -7,6 +7,7 @@ import { IUserAuthInfoRequest } from "../types/interface";
 import IRouter from "./interface/IRouter";
 import { errorResponse, successResponse } from "./response";
 import { ETypeLike } from "../../database/entities/interfaces/like.interface";
+import { ETweetStatus } from "../../database/entities/interfaces/tweet.interface";
 
 const router = Router();
 const uploader = multer({
@@ -47,14 +48,15 @@ class TweetRouter implements IRouter {
       "/get-by-user/:userId",
       authMiddleware.authToken,
       routerHelper.validateParams(schemas.getAllTweetsByUserParams),
-      routerHelper.validateQuery(schemas.filterQuery),
+      routerHelper.validateQuery(schemas.getAllTweetsByUserQuery),
       async (req, res) => {
         try {
           const { userId } = req.params;
-          const { page, limit } = req.query;
+          const { page, limit, status } = req.query;
           const tweets = await tweetHandler.getAllByUser(Number(userId), {
             limit: Number(limit),
             page: Number(page),
+            status: status as ETweetStatus,
           });
 
           return successResponse(res, tweets);

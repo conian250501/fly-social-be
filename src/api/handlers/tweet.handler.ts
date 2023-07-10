@@ -10,6 +10,7 @@ import ITweetHandler, { IDataLike } from "./interface/ITweetHander";
 import { IBaseFilter } from "../common/interface";
 import FollowRepository from "../../database/repositories/FollowRepository";
 import { User } from "../../database/entities/User";
+import { IFilterGetTweets } from "../../database/repositories/interface/ITweetRepository";
 
 class TweetHandler implements ITweetHandler {
   async create(userId: number, data: Tweet): Promise<Tweet> {
@@ -99,7 +100,10 @@ class TweetHandler implements ITweetHandler {
     }
   }
 
-  async getAllByUser(userId: number, filter: IBaseFilter): Promise<Tweet[]> {
+  async getAllByUser(
+    userId: number,
+    filter: IFilterGetTweets
+  ): Promise<Tweet[]> {
     try {
       const tweets = await TweetRepository.getAllByUser(userId, filter);
       return tweets;

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Joi from "joi";
 import { errorResponse } from "../routers/response";
 import { EGender } from "../../database/entities/interfaces/user.interface";
+import { ETweetStatus } from "../../database/entities/interfaces/tweet.interface";
 
 export const schemas = {
   params: Joi.object({
@@ -45,8 +46,13 @@ export const schemas = {
   }),
   updateTweetBody: Joi.object({
     file: Joi.string().allow(null, {}, ""),
-    content: Joi.string().max(255).required(),
-    isPrivate: Joi.boolean().required(),
+    content: Joi.string().max(255),
+    isPrivate: Joi.boolean(),
+    status: Joi.string().valid(
+      ETweetStatus.Archived,
+      ETweetStatus.New,
+      ETweetStatus.Pinned
+    ),
   }),
   likeBody: Joi.object({
     tweetId: Joi.number().required(),
@@ -68,6 +74,15 @@ export const schemas = {
   }),
   getAllTweetsByUserParams: Joi.object({
     userId: Joi.number().required(),
+  }),
+  getAllTweetsByUserQuery: Joi.object({
+    limit: Joi.number(),
+    page: Joi.number(),
+    status: Joi.string().valid(
+      ETweetStatus.Archived,
+      ETweetStatus.New,
+      ETweetStatus.Pinned
+    ),
   }),
   updateProfileBody: Joi.object({
     name: Joi.string().allow(""),
