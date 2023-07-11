@@ -24,4 +24,5 @@ export default interface ITweetHandler {
   like(data: IDataLike): Promise<Like>;
   dislike(type: ETypeLike, tweetId: number): Promise<DeleteResult>;
   archive(id: number): Promise<UpdateResult>;
+  restore(id: number): Promise<UpdateResult>;
 }

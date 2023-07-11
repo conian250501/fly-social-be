@@ -197,6 +197,14 @@ class TweetHandler implements ITweetHandler {
       throw error;
     }
   }
+  async restore(id: number): Promise<UpdateResult> {
+    try {
+      const result = await TweetRepository.restore(id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new TweetHandler();

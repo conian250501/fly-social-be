@@ -18,4 +18,5 @@ export default interface ITweetRepository {
   update(id: number, data: Tweet): Promise<UpdateResult>;
   delete(id: number): Promise<DeleteResult>;
   archive(id: number): Promise<UpdateResult>;
+  restore(id: number): Promise<UpdateResult>;
 }

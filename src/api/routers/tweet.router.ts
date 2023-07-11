@@ -1,13 +1,13 @@
 import { Response, Router } from "express";
 import multer from "multer";
+import { ETypeLike } from "../../database/entities/interfaces/like.interface";
+import { ETweetStatus } from "../../database/entities/interfaces/tweet.interface";
 import tweetHandler from "../handlers/tweet.handler";
 import { routerHelper, schemas } from "../helpers/router.helper";
 import authMiddleware from "../middlewares/auth.middleware";
 import { IUserAuthInfoRequest } from "../types/interface";
 import IRouter from "./interface/IRouter";
 import { errorResponse, successResponse } from "./response";
-import { ETypeLike } from "../../database/entities/interfaces/like.interface";
-import { ETweetStatus } from "../../database/entities/interfaces/tweet.interface";
 
 const router = Router();
 const uploader = multer({
@@ -176,6 +176,23 @@ class TweetRouter implements IRouter {
           await tweetHandler.archive(Number(id));
           return successResponse(res, {
             message: `Archived tweet successfully`,
+          });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+
+    router.put(
+      "/restore/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      async (req, res) => {
+        try {
+          const { id } = req.params;
+          await tweetHandler.restore(Number(id));
+          return successResponse(res, {
+            message: `Restore tweet successfully`,
           });
         } catch (error) {
           return errorResponse(res, error);
