@@ -83,6 +83,7 @@ export const schemas = {
       ETweetStatus.New,
       ETweetStatus.Pinned
     ),
+    isArchived: Joi.string(),
   }),
   updateProfileBody: Joi.object({
     name: Joi.string().allow(""),

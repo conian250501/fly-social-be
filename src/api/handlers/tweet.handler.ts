@@ -188,6 +188,15 @@ class TweetHandler implements ITweetHandler {
       throw error;
     }
   }
+
+  async archive(id: number): Promise<UpdateResult> {
+    try {
+      const result = await TweetRepository.archive(id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default new TweetHandler();

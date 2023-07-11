@@ -16,8 +16,9 @@ class TweetRepository implements ITweetRepository {
 
   getAllByUser(
     userId: number,
-    { limit, page, status }: IFilterGetTweets
+    { limit, page, status, isArchived }: IFilterGetTweets
   ): Promise<Tweet[]> {
+    console.log({ isArchived });
     return this.repo.find({
       where: {
         user: {
@@ -25,6 +26,8 @@ class TweetRepository implements ITweetRepository {
         },
         status: status ? status : ETweetStatus.New,
       },
+      withDeleted: isArchived ? true : false,
+
       relations: {
         comments: {
           likes: true,
@@ -171,6 +174,10 @@ class TweetRepository implements ITweetRepository {
 
   delete(id: number): Promise<DeleteResult> {
     return this.repo.delete(id);
+  }
+
+  archive(id: number): Promise<UpdateResult> {
+    return this.repo.softDelete(id);
   }
 }
 

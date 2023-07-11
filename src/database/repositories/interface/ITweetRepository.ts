@@ -5,6 +5,7 @@ import { ETweetStatus } from "../../entities/interfaces/tweet.interface";
 
 export interface IFilterGetTweets extends IBaseFilter {
   status?: ETweetStatus;
+  isArchived: boolean;
 }
 
 export default interface ITweetRepository {
@@ -16,4 +17,5 @@ export default interface ITweetRepository {
   create(data: Tweet): Promise<Tweet>;
   update(id: number, data: Tweet): Promise<UpdateResult>;
   delete(id: number): Promise<DeleteResult>;
+  archive(id: number): Promise<UpdateResult>;
 }

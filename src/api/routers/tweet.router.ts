@@ -52,11 +52,12 @@ class TweetRouter implements IRouter {
       async (req, res) => {
         try {
           const { userId } = req.params;
-          const { page, limit, status } = req.query;
+          const { page, limit, status, isArchived } = req.query;
           const tweets = await tweetHandler.getAllByUser(Number(userId), {
             limit: Number(limit),
             page: Number(page),
             status: status as ETweetStatus,
+            isArchived: Boolean(isArchived),
           });
 
           return successResponse(res, tweets);
@@ -158,6 +159,23 @@ class TweetRouter implements IRouter {
 
           return successResponse(res, {
             message: "Updated tweet successfully",
+          });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
+
+    router.put(
+      "/archive/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      async (req, res) => {
+        try {
+          const { id } = req.params;
+          await tweetHandler.archive(Number(id));
+          return successResponse(res, {
+            message: `Archived tweet successfully`,
           });
         } catch (error) {
           return errorResponse(res, error);

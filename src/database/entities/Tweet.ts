@@ -1,4 +1,11 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Like } from "./Like";

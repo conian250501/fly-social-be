@@ -23,4 +23,5 @@ export default interface ITweetHandler {
   upload(id: number, file: Express.Multer.File): Promise<string>;
   like(data: IDataLike): Promise<Like>;
   dislike(type: ETypeLike, tweetId: number): Promise<DeleteResult>;
+  archive(id: number): Promise<UpdateResult>;
 }
