@@ -5,7 +5,7 @@ import { Follow } from "./Follow";
 import { Like } from "./Like";
 import { StorageTweet } from "./StorageTweet";
 import { Tweet } from "./Tweet";
-import { EGender } from "./interfaces/user.interface";
+import { EGender, EUserRole } from "./interfaces/user.interface";
 
 export enum TypeAuth {
   LOCAL = "local",
@@ -68,8 +68,8 @@ export class User extends BaseEntity {
   @Column({ name: "github_id", default: null })
   githubId: string;
 
-  @Column({ default: "user" })
-  role: string;
+  @Column({ type: "enum", enum: EUserRole, default: EUserRole.User })
+  role: EUserRole;
 
   @OneToMany(() => Tweet, (tweet) => tweet.user)
   tweets: Tweet[];
