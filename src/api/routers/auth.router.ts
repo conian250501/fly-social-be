@@ -12,6 +12,7 @@ import IRouter from "./interface/IRouter";
 import { errorResponse, successResponse } from "./response";
 import authHandler from "../handlers/auth.handler";
 import mailer from "../services/mailer";
+import { EUserStatus } from "../../database/entities/interfaces/user.interface";
 
 const router = Router();
 class AuthRouter implements IRouter {
@@ -103,6 +104,12 @@ class AuthRouter implements IRouter {
           const { email, password } = req.body;
 
           const user = await userHandler.getAccountLocal(TypeAuth.LOCAL, email);
+
+          if (user.status === EUserStatus.InActive) {
+            throw new Error(
+              `You are blocked for this app! send mail to check the reason`
+            );
+          }
 
           if (!user) {
             throw new Error("User dont exist");

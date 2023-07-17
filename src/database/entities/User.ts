@@ -5,7 +5,7 @@ import { Follow } from "./Follow";
 import { Like } from "./Like";
 import { StorageTweet } from "./StorageTweet";
 import { Tweet } from "./Tweet";
-import { EGender, EUserRole } from "./interfaces/user.interface";
+import { EGender, EUserRole, EUserStatus } from "./interfaces/user.interface";
 
 export enum TypeAuth {
   LOCAL = "local",
@@ -91,4 +91,7 @@ export class User extends BaseEntity {
 
   @Column({ default: false })
   verified: boolean;
+
+  @Column({ type: "enum", enum: EUserStatus, default: EUserStatus.Active })
+  status: EUserStatus;
 }

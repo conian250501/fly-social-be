@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { EUserRole } from "../../database/entities/interfaces/user.interface";
 import { errorResponse } from "../routers/response";
 import { IUserAuthInfoRequest } from "../types/interface";
-import { EUserRole } from "src/database/entities/interfaces/user.interface";
 
 class RoleMiddleware {
   async isAdmin(req: IUserAuthInfoRequest, res: Response, next: NextFunction) {

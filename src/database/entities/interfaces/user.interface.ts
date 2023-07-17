@@ -8,3 +8,8 @@ export enum EUserRole {
   User = "User",
   Admin = "Admin",
 }
+
+export enum EUserStatus {
+  Active = "Active",
+  InActive = "InActive",
+}

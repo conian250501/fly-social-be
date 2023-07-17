@@ -1,4 +1,11 @@
-import { ILike, In, Not, Repository, UpdateResult } from "typeorm";
+import {
+  DeleteResult,
+  ILike,
+  In,
+  Not,
+  Repository,
+  UpdateResult,
+} from "typeorm";
 import { AppDataSource } from "../data-source";
 import { TypeAuth, User } from "../entities/User";
 import IUserRepository, { IFilterGetUsers } from "./interface/IUserRepository";
@@ -10,13 +17,33 @@ class UserRepository implements IUserRepository {
     this.repo = AppDataSource.getRepository(User);
   }
 
-  getAll({ page, limit, name }: IFilterGetUsers): Promise<[User[], number]> {
+  getAll({
+    page,
+    limit,
+    name,
+    status,
+    verified,
+    adminId,
+  }: IFilterGetUsers): Promise<[User[], number]> {
     return this.repo.findAndCount({
       where: {
-        name: ILike(`%${name}%`),
+        name: name ? ILike(`%${name}%`) : undefined,
+        status: status ? status : undefined,
+        verified: verified === "true" ? true : false,
+        id: adminId ? Not(adminId) : undefined,
       },
       take: limit ? limit : null,
       skip: page ? (page - 1) * limit : null,
+      relations: {
+        followers: {
+          user: true,
+          follower: true,
+        },
+        followings: {
+          user: true,
+          follower: true,
+        },
+      },
     });
   }
 
@@ -163,6 +190,15 @@ class UserRepository implements IUserRepository {
       take: limit ? limit : null,
       skip: page ? (page - 1) * limit : null,
     });
+  }
+  softDelete(id: number): Promise<DeleteResult> {
+    return this.repo.softDelete(id);
+  }
+  delete(id: number): Promise<DeleteResult> {
+    return this.repo.delete(id);
+  }
+  restore(id: number): Promise<DeleteResult> {
+    return this.repo.restore(id);
   }
 }
 

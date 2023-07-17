@@ -1,6 +1,5 @@
 import cloudinary from "cloudinary";
-import { UpdateResult } from "typeorm";
-import { TypeAuth, User } from "../../database/entities/User";
+import { User } from "../../database/entities/User";
 import FollowRepository from "../../database/repositories/FollowRepository";
 import UserRepository from "../../database/repositories/UserRepository";
 import { IFilterGetUsers } from "../../database/repositories/interface/IUserRepository";
@@ -8,14 +7,6 @@ import { UserBaseHandler } from "./base/userBaseHandler";
 import IUserHandler from "./interface/IUserHandler";
 
 class UserHandler extends UserBaseHandler implements IUserHandler {
-  async getByEmail(email: string) {
-    try {
-      const user = await UserRepository.getByEmail(email);
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
   async getAllUserFollowing(userId: number): Promise<User[]> {
     try {
       const followings = await FollowRepository.getAllByUser(userId);
@@ -42,84 +33,7 @@ class UserHandler extends UserBaseHandler implements IUserHandler {
       throw error;
     }
   }
-  async create(data: User): Promise<User> {
-    try {
-      const newUser = await UserRepository.create(data);
-      return newUser;
-    } catch (error) {
-      throw error;
-    }
-  }
 
-  async getById(id: number) {
-    try {
-      const user = await UserRepository.getById(id);
-
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getAccountLocalById(id: number): Promise<User> {
-    try {
-      const user = await UserRepository.getAccountLocalById(id);
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getAccountLocal(typeAuth: TypeAuth, email: string): Promise<User> {
-    try {
-      const user = await UserRepository.getAccountLocal(typeAuth, email);
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getAccountGoogle(typeAuth: TypeAuth, googleId: string): Promise<User> {
-    try {
-      const user = await UserRepository.getAccountGoogle(typeAuth, googleId);
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getAccountFacebook(
-    typeAuth: TypeAuth,
-    facebookId: string
-  ): Promise<User> {
-    try {
-      const user = await UserRepository.getAccountFacebook(
-        typeAuth,
-        facebookId
-      );
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getAccountGithub(typeAuth: TypeAuth, githubId: string): Promise<User> {
-    try {
-      const user = await UserRepository.getAccountGithub(typeAuth, githubId);
-      return user;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async update(id: number, data: User): Promise<UpdateResult> {
-    try {
-      const result = await UserRepository.update(id, data);
-      return result;
-    } catch (error) {
-      throw error;
-    }
-  }
   async upload(
     id: number,
     files:
