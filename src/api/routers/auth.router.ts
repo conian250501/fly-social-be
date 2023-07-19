@@ -105,14 +105,14 @@ class AuthRouter implements IRouter {
 
           const user = await userHandler.getAccountLocal(TypeAuth.LOCAL, email);
 
+          if (!user) {
+            throw new Error("User dont exist");
+          }
+
           if (user.status === EUserStatus.InActive) {
             throw new Error(
               `You are blocked for this app! send mail to check the reason`
             );
-          }
-
-          if (!user) {
-            throw new Error("User dont exist");
           }
 
           const isValidPassword = await bcrypt.compare(password, user.password);
