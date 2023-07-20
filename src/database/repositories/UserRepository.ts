@@ -44,6 +44,9 @@ class UserRepository implements IUserRepository {
           follower: true,
         },
       },
+      order: {
+        createdAt: "DESC",
+      },
     });
   }
 
