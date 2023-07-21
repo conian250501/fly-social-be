@@ -9,7 +9,7 @@ export interface IFilterGetUsers extends IBaseFilter {
   name?: string;
   status?: EUserStatus;
   verified?: string;
-  adminId?: number;
+  currentUserId?: number;
 }
 export interface IDataChangePwd {
   currentPassword: string;

@@ -23,14 +23,14 @@ class UserRepository implements IUserRepository {
     name,
     status,
     verified,
-    adminId,
+    currentUserId,
   }: IFilterGetUsers): Promise<[User[], number]> {
     return this.repo.findAndCount({
       where: {
         name: name ? ILike(`%${name}%`) : undefined,
         status: status ? status : undefined,
         verified: verified === "true" ? true : false,
-        id: adminId ? Not(adminId) : undefined,
+        id: currentUserId ? Not(currentUserId) : undefined,
       },
       take: limit ? limit : null,
       skip: page ? (page - 1) * limit : null,

@@ -6,7 +6,7 @@ export interface IFilterGetUsers extends IBaseFilter {
   name?: string;
   status?: EUserStatus;
   verified?: string;
-  adminId?: number;
+  currentUserId?: number;
 }
 export default interface IUserRepository {
   getByEmail(email: string): Promise<User>;

@@ -109,6 +109,12 @@ class AuthRouter implements IRouter {
             throw new Error("User dont exist");
           }
 
+          if (user.deletedAt) {
+            throw new Error(
+              `You are blocked for this app! send mail to check the reason`
+            );
+          }
+
           if (user.status === EUserStatus.InActive) {
             throw new Error(
               `You are blocked for this app! send mail to check the reason`
