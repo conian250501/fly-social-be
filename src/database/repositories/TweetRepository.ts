@@ -115,8 +115,8 @@ class TweetRepository implements ITweetRepository {
     });
   }
 
-  getAll({ page, limit }: IBaseFilter): Promise<Tweet[]> {
-    return this.repo.find({
+  getAll({ page, limit }: IBaseFilter): Promise<[Tweet[], number]> {
+    return this.repo.findAndCount({
       where: {
         isPrivate: false,
         status: ETweetStatus.New,

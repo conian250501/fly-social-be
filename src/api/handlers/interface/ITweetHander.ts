@@ -15,8 +15,6 @@ export default interface ITweetHandler {
   getAllFollowing(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
-  getById(id: number): Promise<Tweet>;
-  getAll(filter: IBaseFilter): Promise<Tweet[]>;
   create(userId: number, data: Tweet): Promise<Tweet>;
   update(id: number, data: Tweet): Promise<UpdateResult>;
   delete(id: number): Promise<DeleteResult>;

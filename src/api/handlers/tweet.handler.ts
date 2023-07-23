@@ -11,8 +11,9 @@ import { IBaseFilter } from "../common/interface";
 import FollowRepository from "../../database/repositories/FollowRepository";
 import { User } from "../../database/entities/User";
 import { IFilterGetTweets } from "../../database/repositories/interface/ITweetRepository";
+import { TweetBaseHandler } from "./base/tweetBaseHandler";
 
-class TweetHandler implements ITweetHandler {
+class TweetHandler extends TweetBaseHandler implements ITweetHandler {
   async create(userId: number, data: Tweet): Promise<Tweet> {
     try {
       const user = await UserRepository.getById(userId);
@@ -27,14 +28,6 @@ class TweetHandler implements ITweetHandler {
     }
   }
 
-  async getAll(filter: IBaseFilter): Promise<Tweet[]> {
-    try {
-      const tweets = await TweetRepository.getAll(filter);
-      return tweets;
-    } catch (error) {
-      throw error;
-    }
-  }
   async getAllFollowing(
     userId: number,
     { page, limit }: IBaseFilter
@@ -60,14 +53,7 @@ class TweetHandler implements ITweetHandler {
       throw error;
     }
   }
-  async getById(id: number): Promise<Tweet> {
-    try {
-      const tweet = await TweetRepository.getById(id);
-      return tweet;
-    } catch (error) {
-      throw error;
-    }
-  }
+
   async upload(id: number, file: Express.Multer.File): Promise<string> {
     try {
       cloudinary.v2.config({

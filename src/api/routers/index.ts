@@ -8,6 +8,7 @@ import StorageTweetRouter from "./StorageTweet.router";
 import userRouter from "./user.router";
 import followRouter from "./follow.router";
 import adminUserRouter from "./admin/user.router";
+import adminTweetRouter from "./admin/tweet.router";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ class BaseRouter implements IRouter {
 
     // ADMIN
     router.use("/admin/users", adminUserRouter.routes);
+    router.use("/admin/tweets", adminTweetRouter.routes);
     return router;
   }
 }

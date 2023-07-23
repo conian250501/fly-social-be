@@ -19,7 +19,7 @@ class TweetRouter implements IRouter {
     router.get("/", async (req, res) => {
       try {
         const { limit, page } = req.query;
-        const tweets = await tweetHandler.getAll({
+        const { tweets } = await tweetHandler.getAll({
           limit: Number(limit),
           page: Number(page),
         });
