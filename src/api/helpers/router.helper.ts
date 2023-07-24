@@ -45,7 +45,7 @@ export const schemas = {
     id: Joi.number().required(),
   }),
   updateTweetBody: Joi.object({
-    file: Joi.string().allow(null, {}, ""),
+    image: Joi.string().allow(null, {}, ""),
     content: Joi.string().max(255),
     isPrivate: Joi.boolean(),
     status: Joi.string().valid(

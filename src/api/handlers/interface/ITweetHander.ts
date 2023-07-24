@@ -16,9 +16,7 @@ export default interface ITweetHandler {
   getAllSaved(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   getAllLiked(userId: number, filter: IBaseFilter): Promise<Tweet[]>;
   create(userId: number, data: Tweet): Promise<Tweet>;
-  update(id: number, data: Tweet): Promise<UpdateResult>;
-  delete(id: number): Promise<DeleteResult>;
-  upload(id: number, file: Express.Multer.File): Promise<string>;
+
   like(data: IDataLike): Promise<Like>;
   dislike(type: ETypeLike, tweetId: number): Promise<DeleteResult>;
   archive(id: number): Promise<UpdateResult>;
