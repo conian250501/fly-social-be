@@ -6,6 +6,8 @@ import { Like } from "./Like";
 import { StorageTweet } from "./StorageTweet";
 import { Tweet } from "./Tweet";
 import { EGender, EUserRole, EUserStatus } from "./interfaces/user.interface";
+import { Conversation } from "./Conversation";
+import { Message } from "./Messages";
 
 export enum TypeAuth {
   LOCAL = "local",
@@ -94,4 +96,13 @@ export class User extends BaseEntity {
 
   @Column({ type: "enum", enum: EUserStatus, default: EUserStatus.Active })
   status: EUserStatus;
+
+  @OneToMany(() => Conversation, (conversation) => conversation.sender)
+  conversationsSender: Conversation[];
+
+  @OneToMany(() => Conversation, (conversation) => conversation.receiver)
+  conversationsReceiver: Conversation[];
+
+  @OneToMany(() => Message, (message) => message.author)
+  messages: Message[];
 }

@@ -6,6 +6,8 @@ import { Like } from "./entities/Like";
 import { Comment } from "./entities/Comment";
 import { StorageTweet } from "./entities/StorageTweet";
 import { Follow } from "./entities/Follow";
+import { Conversation } from "./entities/Conversation";
+import { Message } from "./entities/Messages";
 
 Environment.setup();
 
@@ -24,8 +26,10 @@ export const AppDataSource = new DataSource({
     Like,
     Comment,
     StorageTweet,
-    Follow
+    Follow,
+    Conversation,
+    Message,
   ],
-  migrations: [__dirname + '/migrations/**/*.ts'],
-  subscribers:[]
-})
+  migrations: [__dirname + "/migrations/**/*.ts"],
+  subscribers: [],
+});
