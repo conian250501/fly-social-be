@@ -113,6 +113,16 @@ export const schemas = {
     page: Joi.number(),
     name: Joi.string().allow(""),
   }),
+
+  newConversation: Joi.object({
+    senderId: Joi.number().required(),
+    receiverId: Joi.number().required(),
+  }),
+  newMessage: Joi.object({
+    content: Joi.string().required(),
+    conversationId: Joi.number().required(),
+    file: Joi.string().allow("", null, {}),
+  }),
 };
 
 export const routerHelper = {

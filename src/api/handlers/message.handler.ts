@@ -1,0 +1,27 @@
+import UserRepository from "src/database/repositories/UserRepository";
+import { Message } from "../../database/entities/Messages";
+import MessageRepository from "../../database/repositories/MessageRepository";
+import IMessageHandler, { IDataNewMessage } from "./interface/IMessageHandler";
+import ConversationRepository from "src/database/repositories/ConversationRepository";
+
+class MessageHandler implements IMessageHandler {
+  async create(data: IDataNewMessage): Promise<Message> {
+    try {
+      const author = await UserRepository.getById(data.authorId);
+      const conservation = await ConversationRepository.getById(
+        data.conversationId
+      );
+
+      const newMessage = await MessageRepository.create({
+        ...data,
+        author,
+        conservation,
+      } as Message);
+
+      return newMessage;
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+export default new MessageHandler();
