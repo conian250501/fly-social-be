@@ -13,27 +13,6 @@ class ConversationRepository implements IConversationRepository {
   create(data: Conversation): Promise<Conversation> {
     return this.repo.save(data);
   }
-  getDetail(senderId: number, receiverId: number): Promise<Conversation> {
-    if (!senderId || !receiverId) {
-      return null;
-    }
-
-    return this.repo.findOne({
-      where: {
-        sender: {
-          id: senderId,
-        },
-        receiver: {
-          id: receiverId,
-        },
-      },
-      relations: {
-        messages: {
-          author: true,
-        },
-      },
-    });
-  }
   getById(id: number): Promise<Conversation> {
     if (!id) return null;
     return this.repo.findOne({

@@ -97,11 +97,11 @@ export class User extends BaseEntity {
   @Column({ type: "enum", enum: EUserStatus, default: EUserStatus.Active })
   status: EUserStatus;
 
-  @OneToMany(() => Conversation, (conversation) => conversation.sender)
-  conversationsSender: Conversation[];
+  @OneToMany(() => Conversation, (conversation) => conversation.host)
+  conversationsHost: Conversation[];
 
-  @OneToMany(() => Conversation, (conversation) => conversation.receiver)
-  conversationsReceiver: Conversation[];
+  @OneToMany(() => Conversation, (conversation) => conversation.participant)
+  conversationsParticipant: Conversation[];
 
   @OneToMany(() => Message, (message) => message.author)
   messages: Message[];
