@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { ArrayContains, In, Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Conversation } from "../entities/Conversation";
 import IConversationRepository from "./interface/IConversationRepository";
@@ -23,8 +23,19 @@ class ConversationRepository implements IConversationRepository {
         messages: {
           author: true,
         },
+        participants: true,
       },
     });
+  }
+  getByParticipants(ids: number[]): Promise<Conversation> {
+    return this.repo
+      .createQueryBuilder("conversation")
+      .leftJoinAndSelect("conversation.participants", "participant")
+      .where(
+        "conversation.id IN (SELECT conversation_id FROM conversations_participants WHERE participant_id IN (:...ids) GROUP BY conversation_id HAVING COUNT(DISTINCT participant_id) = :count)",
+        { ids, count: ids.length }
+      )
+      .getOne();
   }
 }
 

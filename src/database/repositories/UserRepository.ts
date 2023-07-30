@@ -29,11 +29,11 @@ class UserRepository implements IUserRepository {
       where: {
         name: name ? ILike(`%${name}%`) : undefined,
         status: status ? status : undefined,
-        verified: verified === "true" ? true : false,
+        verified: verified ? verified : undefined,
         id: currentUserId ? Not(currentUserId) : undefined,
       },
-      take: limit ? limit : null,
       skip: page ? (page - 1) * limit : null,
+      take: limit ? limit : null,
       relations: {
         followers: {
           user: true,
@@ -57,6 +57,7 @@ class UserRepository implements IUserRepository {
   }
 
   getById(id: number): Promise<User> {
+    if (!id) return null;
     return this.repo.findOne({
       where: { id },
       relations: {
@@ -71,6 +72,10 @@ class UserRepository implements IUserRepository {
         followings: {
           user: true,
           follower: true,
+        },
+        conversations: {
+          participants: true,
+          messages: true,
         },
       },
     });
@@ -202,6 +207,14 @@ class UserRepository implements IUserRepository {
   }
   restore(id: number): Promise<DeleteResult> {
     return this.repo.restore(id);
+  }
+
+  getAllByIds(ids: number[]): Promise<User[]> {
+    return this.repo.find({
+      where: {
+        id: In(ids),
+      },
+    });
   }
 }
 

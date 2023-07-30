@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Follow } from "./Follow";
@@ -97,11 +97,8 @@ export class User extends BaseEntity {
   @Column({ type: "enum", enum: EUserStatus, default: EUserStatus.Active })
   status: EUserStatus;
 
-  @OneToMany(() => Conversation, (conversation) => conversation.host)
-  conversationsHost: Conversation[];
-
-  @OneToMany(() => Conversation, (conversation) => conversation.participant)
-  conversationsParticipant: Conversation[];
+  @ManyToMany(() => Conversation, (conversation) => conversation.participants)
+  conversations: Conversation[];
 
   @OneToMany(() => Message, (message) => message.author)
   messages: Message[];

@@ -1,9 +1,10 @@
-import { Router } from "express";
+import { Response, Router } from "express";
 import conversationHandler from "../handlers/conversation.handler";
 import { routerHelper, schemas } from "../helpers/router.helper";
 import authMiddleware from "../middlewares/auth.middleware";
 import IRouter from "./interface/IRouter";
 import { errorResponse, successResponse } from "./response";
+import { IUserAuthInfoRequest } from "../types/interface";
 
 const router = Router();
 
@@ -27,9 +28,12 @@ class ConversationRouter implements IRouter {
       "/",
       authMiddleware.authToken,
       routerHelper.validateBody(schemas.newConversation),
-      async (req, res) => {
+      async (req: IUserAuthInfoRequest, res: Response) => {
         try {
-          const conservation = await conversationHandler.create(req.body);
+          const conservation = await conversationHandler.create(
+            req.user.id,
+            req.body
+          );
           return successResponse(res, conservation);
         } catch (error) {
           return errorResponse(res, error);

@@ -115,8 +115,7 @@ export const schemas = {
   }),
 
   newConversation: Joi.object({
-    senderId: Joi.number().required(),
-    receiverId: Joi.number().required(),
+    participantIds: Joi.array().items(Joi.number()).required(),
   }),
   newMessage: Joi.object({
     content: Joi.string().required(),

@@ -6,13 +6,27 @@ import IConversationHandler, {
 import ConversationRepository from "../../database/repositories/ConversationRepository";
 
 class ConversationHandler implements IConversationHandler {
-  async create(data: IDataNewConversation): Promise<Conversation> {
+  async create(
+    currentUserId: number,
+    data: IDataNewConversation
+  ): Promise<Conversation> {
     try {
-      const host = await UserRepository.getById(data.hostId);
-      const participant = await UserRepository.getById(data.participantId);
+      const conversationExist = await ConversationRepository.getByParticipants([
+        ...data.participantIds,
+        currentUserId,
+      ]);
+
+      if (conversationExist) {
+        return conversationExist;
+      }
+
+      const participants = await UserRepository.getAllByIds([
+        ...data.participantIds,
+        currentUserId,
+      ]);
+
       const newConversation = await ConversationRepository.create({
-        host,
-        participant,
+        participants,
       } as Conversation);
 
       return newConversation;

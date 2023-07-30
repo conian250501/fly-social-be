@@ -1,23 +1,25 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateConversations1690535638894 implements MigrationInterface {
-  name = "CreateConversations1690535638894";
+export class CreateMessages1690636972540 implements MigrationInterface {
+  name = "CreateMessages1690636972540";
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-            CREATE TABLE "conversations" (
+            CREATE TABLE "messages" (
                 "id" SERIAL NOT NULL,
                 "created_at" TIMESTAMP NOT NULL DEFAULT now(),
                 "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
                 "deleted_at" TIMESTAMP,
-                CONSTRAINT "PK_ee34f4f7ced4ec8681f26bf04ef" PRIMARY KEY ("id")
+                "content" character varying,
+                "file" character varying,
+                CONSTRAINT "PK_18325f38ae6de43878487eff986" PRIMARY KEY ("id")
             )
         `);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-            DROP TABLE "conversations"
+            DROP TABLE "messages"
         `);
   }
 }

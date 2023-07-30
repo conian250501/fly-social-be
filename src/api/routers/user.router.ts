@@ -6,6 +6,7 @@ import { routerHelper, schemas } from "../helpers/router.helper";
 import userHandler from "../handlers/user.handler";
 import multer from "multer";
 import { IUserAuthInfoRequest } from "../types/interface";
+import { EUserStatus } from "../../database/entities/interfaces/user.interface";
 
 const router = Router();
 const uploader = multer({
@@ -14,20 +15,27 @@ const uploader = multer({
 
 class UserRouter implements IRouter {
   get routes() {
-    router.get("/", authMiddleware.authToken, async (req, res) => {
-      try {
-        const { name, limit, page } = req.query;
-        const { users, total } = await userHandler.getAll({
-          name: String(name),
-          limit: Number(limit),
-          page: Number(page),
-        });
-        const totalPage = Math.ceil(total / Number(limit));
-        return successResponse(res, { users, page: Number(page), totalPage });
-      } catch (error) {
-        return errorResponse(res, error);
+    router.get(
+      "/",
+      authMiddleware.authToken,
+      async (req: IUserAuthInfoRequest, res: Response) => {
+        try {
+          const { name, limit, page } = req.query;
+          const { users, total } = await userHandler.getAll({
+            name: String(name),
+            limit: Number(limit),
+            page: Number(page),
+            currentUserId: req.user.id,
+            status: EUserStatus.Active,
+          });
+          const totalPage = Math.ceil(total / Number(limit));
+
+          return successResponse(res, { users, page: Number(page), totalPage });
+        } catch (error) {
+          return errorResponse(res, error);
+        }
       }
-    });
+    );
     router.get(
       "/:id",
       authMiddleware.authToken,

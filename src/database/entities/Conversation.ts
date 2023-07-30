@@ -1,25 +1,28 @@
-import { Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import {
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Message } from "./Messages";
 import { User } from "./User";
 
 @Entity({ name: "conversations" })
 export class Conversation extends BaseEntity {
-  @ManyToOne(() => User, (user) => user.conversationsHost, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+  @ManyToMany(() => User, (user) => user.conversations)
+  @JoinTable({
+    name: "conversations_participants",
+    joinColumn: {
+      name: "conversation_id",
+    },
+    inverseJoinColumn: {
+      name: "participant_id",
+    },
   })
-  @JoinColumn({ name: "host_id" })
-  host: User;
-
-  @ManyToOne(() => User, (user) => user.conversationsParticipant, {
-    cascade: true,
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
-  })
-  @JoinColumn({ name: "participant_id" })
-  participant: User;
+  participants: User[];
 
   @OneToMany(() => Message, (message) => message.conservation)
   messages: Message[];

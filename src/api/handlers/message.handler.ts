@@ -1,8 +1,8 @@
-import UserRepository from "src/database/repositories/UserRepository";
+import UserRepository from "../../database/repositories/UserRepository";
 import { Message } from "../../database/entities/Messages";
 import MessageRepository from "../../database/repositories/MessageRepository";
 import IMessageHandler, { IDataNewMessage } from "./interface/IMessageHandler";
-import ConversationRepository from "src/database/repositories/ConversationRepository";
+import ConversationRepository from "../../database/repositories/ConversationRepository";
 
 class MessageHandler implements IMessageHandler {
   async create(data: IDataNewMessage): Promise<Message> {

@@ -23,7 +23,7 @@ class UserRouter implements IRouter {
             limit: Number(limit),
             page: Number(page),
             status: status as EUserStatus,
-            verified: String(verified),
+            verified: verified === "true" ? true : false,
             currentUserId: req.user.id,
           });
 
