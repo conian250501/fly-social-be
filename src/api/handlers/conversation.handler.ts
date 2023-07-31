@@ -4,6 +4,7 @@ import IConversationHandler, {
   IDataNewConversation,
 } from "./interface/IConversationHandler";
 import ConversationRepository from "../../database/repositories/ConversationRepository";
+import { IBaseFilter } from "../common/interface";
 
 class ConversationHandler implements IConversationHandler {
   async create(
@@ -38,6 +39,25 @@ class ConversationHandler implements IConversationHandler {
     try {
       const conversation = await ConversationRepository.getById(id);
       return conversation;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getAll(
+    userId: number,
+    { page, limit }: IBaseFilter
+  ): Promise<{ conversations: Conversation[]; total: number }> {
+    try {
+      const user = await UserRepository.getById(userId);
+      const _conversations = user.conversations;
+      const total = _conversations.length;
+
+      const startIndex = (page - 1) * limit;
+      const endIndex = Math.min(startIndex + limit, total);
+
+      const conversations = _conversations.slice(startIndex, endIndex);
+
+      return { conversations, total };
     } catch (error) {
       throw error;
     }

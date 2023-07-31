@@ -1,7 +1,8 @@
-import { ArrayContains, In, Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Conversation } from "../entities/Conversation";
 import IConversationRepository from "./interface/IConversationRepository";
+import { IBaseFilter } from "../../api/common/interface";
 
 class ConversationRepository implements IConversationRepository {
   repo: Repository<Conversation>;
@@ -36,6 +37,24 @@ class ConversationRepository implements IConversationRepository {
         { ids, count: ids.length }
       )
       .getOne();
+  }
+  getAll(
+    userId: number,
+    { page, limit }: IBaseFilter
+  ): Promise<[Conversation[], number]> {
+    return this.repo.findAndCount({
+      where: {
+        participants: {
+          id: userId,
+        },
+      },
+      relations: {
+        participants: true,
+        messages: true,
+      },
+      skip: page ? (page - 1) * limit : null,
+      take: limit ? limit : null,
+    });
   }
 }
 

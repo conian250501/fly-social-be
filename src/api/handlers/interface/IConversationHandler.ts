@@ -1,3 +1,4 @@
+import { IBaseFilter } from "../../common/interface";
 import { Conversation } from "../../../database/entities/Conversation";
 
 export interface IDataNewConversation
@@ -10,4 +11,8 @@ export default interface IConversationHandler {
     data: IDataNewConversation
   ): Promise<Conversation>;
   getById(id: number): Promise<Conversation>;
+  getAll(
+    userId: number,
+    filter: IBaseFilter
+  ): Promise<{ conversations: Conversation[]; total: number }>;
 }
