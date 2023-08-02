@@ -8,4 +8,5 @@ export interface IDataNewMessage
 
 export default interface IMessageHandler {
   create(data: IDataNewMessage): Promise<Message>;
+  getAll(conversationId: number): Promise<Message[]>;
 }

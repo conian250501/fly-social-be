@@ -9,6 +9,20 @@ import { IUserAuthInfoRequest } from "../types/interface";
 const router = Router();
 class MessageRouter implements IRouter {
   get routes() {
+    router.get(
+      "/conversation/:id",
+      authMiddleware.authToken,
+      routerHelper.validateParams(schemas.params),
+      async (req, res) => {
+        try {
+          const { id } = req.params;
+          const messages = await messageHandler.getAll(Number(id));
+          return successResponse(res, messages);
+        } catch (error) {
+          return errorResponse(res, error);
+        }
+      }
+    );
     router.post(
       "/",
       authMiddleware.authToken,

@@ -23,5 +23,19 @@ class MessageHandler implements IMessageHandler {
       throw error;
     }
   }
+  async getAll(conversationId: number): Promise<Message[]> {
+    try {
+      const conversation = await ConversationRepository.getById(conversationId);
+      if (!conversation) {
+        throw new Error("Conversation doesn't exist");
+      }
+      const messages = conversation.messages.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+      );
+      return messages;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 export default new MessageHandler();
