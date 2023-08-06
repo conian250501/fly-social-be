@@ -49,15 +49,10 @@ async function startApiServer() {
 
     // SEND NEW MESSAGE
     socket.on("newMessage", async (data) => {
-      const conversation = await ConversationRepository.getById(
-        data.conversationId
+      io.to(`conversation_${data.conversation.id}`).emit(
+        "messageResponse",
+        data
       );
-      const author = await UserRepository.getById(data.authorId);
-      io.to(`conversation_${data.conversationId}`).emit("messageResponse", {
-        ...data,
-        author,
-        conversation,
-      });
     });
   });
 
