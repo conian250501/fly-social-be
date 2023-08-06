@@ -25,5 +25,5 @@ export class Message extends BaseEntity {
     onUpdate: "CASCADE",
   })
   @JoinColumn({ name: "conversation_id" })
-  conservation: Conversation;
+  conversation: Conversation;
 }

@@ -8,14 +8,14 @@ class MessageHandler implements IMessageHandler {
   async create(data: IDataNewMessage): Promise<Message> {
     try {
       const author = await UserRepository.getById(data.authorId);
-      const conservation = await ConversationRepository.getById(
+      const conversation = await ConversationRepository.getById(
         data.conversationId
       );
 
       const newMessage = await MessageRepository.create({
         ...data,
         author,
-        conservation,
+        conversation,
       } as Message);
 
       return newMessage;

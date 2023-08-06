@@ -1,10 +1,13 @@
 import { Application } from "express";
-import { Environment } from "./config/enviroment";
-import api from "./api";
-import { config } from "./config/config";
-import database from "./database";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import api from "./api";
+import { config } from "./config/config";
+import { Environment } from "./config/enviroment";
+import database from "./database";
+import ConversationRepository from "./database/repositories/ConversationRepository";
+import MessageRepository from "./database/repositories/MessageRepository";
+import UserRepository from "./database/repositories/UserRepository";
 
 Environment.setup();
 
@@ -31,8 +34,30 @@ async function startApiServer() {
     socket.on("disconnect", () => {
       console.log("🔥: A user disconnected");
     });
-    socket.on("newMessage", (data) => {
-      io.emit("messageResponse", data);
+
+    // JOIN CONVERSATION
+    socket.on("joinConversation", (conversationId) => {
+      socket.join(`conversation_${conversationId}`);
+      console.log(`User joined room ${conversationId}`);
+    });
+
+    // LEAVE CONVERSATION
+    socket.on("leaveConversation", (conversationId) => {
+      socket.leave(`conversation_${conversationId}`);
+      console.log(`User leaved room ${conversationId}`);
+    });
+
+    // SEND NEW MESSAGE
+    socket.on("newMessage", async (data) => {
+      const conversation = await ConversationRepository.getById(
+        data.conversationId
+      );
+      const author = await UserRepository.getById(data.authorId);
+      io.to(`conversation_${data.conversationId}`).emit("messageResponse", {
+        ...data,
+        author,
+        conversation,
+      });
     });
   });
 

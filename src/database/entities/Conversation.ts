@@ -17,6 +17,6 @@ export class Conversation extends BaseEntity {
   })
   participants: User[];
 
-  @OneToMany(() => Message, (message) => message.conservation)
+  @OneToMany(() => Message, (message) => message.conversation)
   messages: Message[];
 }
