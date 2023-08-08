@@ -1,4 +1,4 @@
-import { Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Message } from "./Messages";
 import { User } from "./User";
@@ -16,6 +16,12 @@ export class Conversation extends BaseEntity {
     },
   })
   participants: User[];
+
+  @Column({ name: "is_group", default: false })
+  isGroup: boolean;
+
+  @Column({ name: "group_name", default: null })
+  groupName: string;
 
   @OneToMany(() => Message, (message) => message.conversation)
   messages: Message[];

@@ -69,6 +69,7 @@ class ConversationRouter implements IRouter {
         }
       }
     );
+
     return router;
   }
 }
