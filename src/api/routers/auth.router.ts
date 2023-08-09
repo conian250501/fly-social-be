@@ -20,9 +20,30 @@ class AuthRouter implements IRouter {
     router.post(
       "/google",
       passport.authenticate("google-oauth-token", { session: false }),
-      async (req, res) => {
+      async (req: IUserAuthInfoRequest, res: Response) => {
         try {
-          return successResponse(res, req.user);
+          const userExist = await userHandler.getByEmail(req.user.email);
+
+          if (userExist) {
+            if (userExist.typeAuth !== TypeAuth.GOOGLE) {
+              throw new Error(
+                `The account has email: ${userExist.email} already exists with method MAIL AND PASSWORD`
+              );
+            }
+            const newToken = jwt.sign(
+              { id: userExist.id },
+              process.env.JWT_SECRET
+            );
+            return successResponse(res, { ...userExist, token: newToken });
+          }
+
+          const newUser = await userHandler.create({
+            ...req.user,
+            typeAuth: TypeAuth.GOOGLE,
+          } as User);
+          const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
+
+          return successResponse(res, { ...newUser, token: newToken });
         } catch (error) {
           return errorResponse(res, error);
         }
@@ -73,13 +94,12 @@ class AuthRouter implements IRouter {
         try {
           const { email, password } = req.body;
 
-          const userExist = await userHandler.getAccountLocal(
-            TypeAuth.LOCAL,
-            email
-          );
+          const userExist = await userHandler.getByEmail(email);
 
           if (userExist) {
-            throw new Error(`User has email ${email} exist`);
+            throw new Error(
+              `User has email ${email} with method "${userExist.typeAuth}" exist`
+            );
           }
 
           const passwordHashed = await bcrypt.hash(password, 10);
