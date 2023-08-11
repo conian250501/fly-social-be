@@ -12,12 +12,16 @@ class ConversationHandler implements IConversationHandler {
     data: IDataNewConversation
   ): Promise<Conversation> {
     try {
+      const participantList = [...data.participantIds, currentUserId];
       const conversationExist = await ConversationRepository.getByParticipants([
         ...data.participantIds,
         currentUserId,
       ]);
 
-      if (conversationExist) {
+      if (
+        conversationExist &&
+        conversationExist.participants.length === participantList.length
+      ) {
         return conversationExist;
       }
 

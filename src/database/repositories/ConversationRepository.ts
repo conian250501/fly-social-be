@@ -29,6 +29,7 @@ class ConversationRepository implements IConversationRepository {
     });
   }
   getByParticipants(ids: number[]): Promise<Conversation> {
+    console.log(ids);
     return this.repo
       .createQueryBuilder("conversation")
       .leftJoinAndSelect("conversation.participants", "participant")
