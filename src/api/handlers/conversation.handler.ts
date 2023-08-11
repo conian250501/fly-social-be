@@ -26,7 +26,7 @@ class ConversationHandler implements IConversationHandler {
         currentUserId,
       ]);
 
-      if (data.participantIds.length > 2) {
+      if (data.participantIds.length > 1) {
         const newConversation = await ConversationRepository.create({
           participants,
           isGroup: true,
