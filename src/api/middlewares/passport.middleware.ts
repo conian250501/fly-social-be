@@ -20,34 +20,13 @@ passport.use(
       done: any
     ) {
       try {
-        const userExist = await userHandler.getAccountGoogle(
-          TypeAuth.GOOGLE,
-          profile.id
-        );
-
-        if (userExist) {
-          const newToken = jwt.sign(
-            { id: userExist.id },
-            process.env.JWT_SECRET,
-            {
-              expiresIn: "1d",
-            }
-          );
-          return done(null, { ...userExist, token: newToken });
-        }
-
-        const newUser = await userHandler.create({
-          name: profile.displayName,
+        const user = {
           email: profile.emails[0].value,
+          name: profile.displayName,
           googleId: profile.id,
-          typeAuth: TypeAuth.GOOGLE,
           avatar: profile.photos[0].value,
-        } as User);
-        const newToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
-          expiresIn: "1d",
-        });
-
-        return done(null, { ...newUser, token: newToken });
+        };
+        return done(null, user);
       } catch (error) {
         done({ message: "Sign in by google faild" }, null);
       }

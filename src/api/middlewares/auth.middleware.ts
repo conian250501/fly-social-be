@@ -33,6 +33,10 @@ class AuthMiddleware {
 
       const user = await userHandler.getById(result.id as number);
 
+      if (!user) {
+        throw new Error("Unauthorized");
+      }
+
       req.user = user;
       next();
     } catch (error) {

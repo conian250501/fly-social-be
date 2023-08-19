@@ -5,8 +5,8 @@ import { EUserStatus } from "../../../database/entities/interfaces/user.interfac
 export interface IFilterGetUsers extends IBaseFilter {
   name?: string;
   status?: EUserStatus;
-  verified?: string;
-  adminId?: number;
+  verified?: boolean;
+  currentUserId?: number;
 }
 export default interface IUserRepository {
   getByEmail(email: string): Promise<User>;
@@ -21,6 +21,7 @@ export default interface IUserRepository {
   update(id: number, data: User): Promise<UpdateResult>;
   getAccountLocalById(id: number): Promise<User>;
   getAll(filter: IFilterGetUsers): Promise<[User[], number]>;
+  getAllByIds(ids: number[]): Promise<User[]>;
   getUserFollowedYet(
     userId: number,
     ids: number[],

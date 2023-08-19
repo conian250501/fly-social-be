@@ -23,8 +23,8 @@ class UserRouter implements IRouter {
             limit: Number(limit),
             page: Number(page),
             status: status as EUserStatus,
-            verified: String(verified),
-            adminId: req.user.id,
+            verified: verified === "true" ? true : false,
+            currentUserId: req.user.id,
           });
 
           const totalPage = Math.ceil(total / Number(limit));
@@ -34,8 +34,8 @@ class UserRouter implements IRouter {
         }
       }
     );
-    router.delete(
-      "/archived/:id",
+    router.put(
+      "/archive/:id",
       authMiddleware.authToken,
       roleMiddleware.isAdmin,
       routerHelper.validateParams(schemas.params),
@@ -102,7 +102,7 @@ class UserRouter implements IRouter {
 
           await userHandler.update(Number(id), req.body);
           return successResponse(res, {
-            message: `Archived user successfully`,
+            message: `Updated user successfully`,
           });
         } catch (error) {
           return errorResponse(res, error);

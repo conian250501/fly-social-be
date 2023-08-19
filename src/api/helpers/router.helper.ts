@@ -45,7 +45,7 @@ export const schemas = {
     id: Joi.number().required(),
   }),
   updateTweetBody: Joi.object({
-    file: Joi.string().allow(null, {}, ""),
+    image: Joi.string().allow(null, {}, ""),
     content: Joi.string().max(255),
     isPrivate: Joi.boolean(),
     status: Joi.string().valid(
@@ -112,6 +112,15 @@ export const schemas = {
     limit: Joi.number(),
     page: Joi.number(),
     name: Joi.string().allow(""),
+  }),
+
+  newConversation: Joi.object({
+    participantIds: Joi.array().items(Joi.number()).required(),
+  }),
+  newMessage: Joi.object({
+    content: Joi.string().required(),
+    conversationId: Joi.number().required(),
+    file: Joi.string().allow("", null, {}),
   }),
 };
 

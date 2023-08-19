@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import { Auth, google } from "googleapis";
+import { EmailParams, MailerSend, Recipient, Sender } from "mailersend";
 import nodemailer from "nodemailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+const mailgun = require("mailgun.js");
 
 class MailService {
   mailService: Auth.OAuth2Client;
@@ -46,6 +49,7 @@ class MailService {
         html: html,
       });
     } catch (error) {
+      console.log({ error });
       throw error;
     }
   }

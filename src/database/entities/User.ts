@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, ManyToMany, OneToMany } from "typeorm";
 import { BaseEntity } from "./BaseEntity";
 import { Comment } from "./Comment";
 import { Follow } from "./Follow";
@@ -6,6 +6,8 @@ import { Like } from "./Like";
 import { StorageTweet } from "./StorageTweet";
 import { Tweet } from "./Tweet";
 import { EGender, EUserRole, EUserStatus } from "./interfaces/user.interface";
+import { Conversation } from "./Conversation";
+import { Message } from "./Messages";
 
 export enum TypeAuth {
   LOCAL = "local",
@@ -94,4 +96,10 @@ export class User extends BaseEntity {
 
   @Column({ type: "enum", enum: EUserStatus, default: EUserStatus.Active })
   status: EUserStatus;
+
+  @ManyToMany(() => Conversation, (conversation) => conversation.participants)
+  conversations: Conversation[];
+
+  @OneToMany(() => Message, (message) => message.author)
+  messages: Message[];
 }
